@@ -43,10 +43,7 @@ jobs:
           test "$(git rev-parse 'HEAD^{tree}')" = "$SOURCE_TREE"
           test "$(gh api repos/$GH_REPO/actions/runs/40354316367 --jq .head_sha)" = "$SOURCE_SHA"
           test "$(gh api repos/$GH_REPO/actions/runs/40354316367 --jq .conclusion)" = success
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            echo 'This release already exists; refusing to replace it.' >&2
-            exit 1
-          fi
+          test "$(gh api repos/$GH_REPO/releases --jq '[.[] | select(.tag_name == "v0.1.0-preview.2" and .draft == false)] | length')" = 0
       - name: Recheck release source
         run: |
           set -euo pipefail
@@ -84,10 +81,31 @@ jobs:
         run: |
           set -euo pipefail
           ZIP="/tmp/rsb-release-assets/rsb-lab-$TAG.zip"
-          gh release create "$TAG" "$ZIP" "$ZIP.sha256" \
-            --target "$SOURCE_SHA" --title "RSB Brewery ICS Lab $TAG" \
-            --notes-file RELEASE_NOTES.md --draft --prerelease --latest=false
-          test "$(gh api repos/$GH_REPO/releases/tags/$TAG --jq '.assets | length')" = 2
-          gh release edit "$TAG" --draft=false
-          gh release view "$TAG" --json url,isPrerelease,isDraft,assets
+          RELEASE_ID=$(gh api repos/$GH_REPO/releases --jq '.[] | select(.tag_name == "v0.1.0-preview.2") | .id')
+          if test -z "$RELEASE_ID"; then
+            gh release create "$TAG" "$ZIP" "$ZIP.sha256" \
+              --target "$SOURCE_SHA" --title "RSB Brewery ICS Lab $TAG" \
+              --notes-file RELEASE_NOTES.md --draft --prerelease --latest=false
+            RELEASE_ID=$(gh api repos/$GH_REPO/releases --jq '.[] | select(.tag_name == "v0.1.0-preview.2") | .id')
+          fi
+          test -n "$RELEASE_ID"
+          export ZIP
+          gh api "repos/$GH_REPO/releases/$RELEASE_ID" > /tmp/rsb-draft.json
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          r = json.loads(Path('/tmp/rsb-draft.json').read_text())
+          assert r['draft'] and r['prerelease']
+          assert r['tag_name'] == os.environ['TAG']
+          assert r['target_commitish'] == os.environ['SOURCE_SHA']
+          assert r['author']['login'] == 'github-actions[bot]'
+          assets = {a['name']: a for a in r['assets']}
+          z = Path(os.environ['ZIP'])
+          assert set(assets) == {z.name, z.name + '.sha256'}
+          for p in [z, Path(str(z) + '.sha256')]:
+              assert assets[p.name]['state'] == 'uploaded'
+              assert assets[p.name]['digest'] == 'sha256:' + hashlib.sha256(p.read_bytes()).hexdigest()
+          print('Draft identity, source revision and both uploaded asset digests verified.')
+          PY
+          gh api --method PATCH "repos/$GH_REPO/releases/$RELEASE_ID" -F draft=false -F prerelease=true --jq '{url: .html_url, draft: .draft, prerelease: .prerelease}'
 
