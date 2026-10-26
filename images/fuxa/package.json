@@ -1,0 +1,9 @@
+{
+  "name": "rsb-fuxa-drivers",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "modbus-serial": "8.0.25",
+    "node-bacnet": "0.2.4"
+  }
+}

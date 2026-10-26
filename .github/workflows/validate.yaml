@@ -1,0 +1,29 @@
+name: Validate source release
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python tools/validate_release.py
+      - run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - run: python -m unittest discover -s tools/pentest-status -p 'test_*.py' -v
+      - run: python -m unittest discover -s vlan50/simulators/fermentation -p 'test_*.py' -v
+      - name: Check Compose interpolation without starting containers
+        shell: bash
+        run: |
+          cp .env.example .env
+          sed -i "s|CHANGE_ME_ABSOLUTE_LINUX_STATE_DIRECTORY|$PWD/.local/state|" .env
+          for zone in 20 30 40 50; do
+            docker compose --env-file .env -p rsb-vlan$zone -f vlan$zone/compose.yaml config --quiet
+          done
+      - name: Check shell scripts
+        run: bash -n vlan50/deploy-openplc.sh

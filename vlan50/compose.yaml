@@ -1,0 +1,259 @@
+networks:
+  vlan50:
+    driver: macvlan
+    driver_opts:
+      parent: ${VLAN50_PARENT:?Set the Linux network interface}
+    ipam:
+      config:
+      - subnet: 10.0.50.0/24
+        gateway: 10.0.50.1
+  cell-rawmat:
+    driver: bridge
+    internal: true
+  cell-brewhouse:
+    driver: bridge
+    internal: true
+  cell-fermentation:
+    driver: bridge
+    internal: true
+  cell-conditioning:
+    driver: bridge
+    internal: true
+  cell-packaging:
+    driver: bridge
+    internal: true
+  cell-utilities:
+    driver: bridge
+    internal: true
+services:
+  openplc-rawmat:
+    image: rsb-openplc:source-v0.1.0
+    container_name: ics-plc-rawmat
+    restart: unless-stopped
+    cap_add:
+    - SYS_NICE
+    - IPC_LOCK
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/openplc/rawmat:/docker_persistent
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.101
+      cell-rawmat:
+        aliases:
+        - plc
+  sim-rawmat:
+    build:
+      context: ./simulators/rawmat
+      dockerfile: Dockerfile
+    container_name: ics-sim-rawmat
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      PLC_HOST: plc
+      PLC_PORT: '502'
+      SIM_INTERVAL: '2'
+    networks:
+      cell-rawmat: null
+    depends_on:
+    - openplc-rawmat
+    image: rsb-sim-rawmat:source-v0.1.0
+  openplc-brewhouse:
+    image: rsb-openplc:source-v0.1.0
+    container_name: ics-plc-brewhouse
+    restart: unless-stopped
+    cap_add:
+    - SYS_NICE
+    - IPC_LOCK
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/openplc/brewhouse:/docker_persistent
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.102
+      cell-brewhouse:
+        aliases:
+        - plc
+  sim-brewhouse:
+    build:
+      context: ./simulators/brewhouse
+      dockerfile: Dockerfile
+    container_name: ics-sim-brewhouse
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      PLC_HOST: plc
+      PLC_PORT: '502'
+      SIM_INTERVAL: '2'
+    networks:
+      cell-brewhouse: null
+    depends_on:
+    - openplc-brewhouse
+    image: rsb-sim-brewhouse:source-v0.1.0
+  openplc-fermentation:
+    image: rsb-openplc:source-v0.1.0
+    container_name: ics-plc-fermentation
+    restart: unless-stopped
+    cap_add:
+    - SYS_NICE
+    - IPC_LOCK
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/openplc/fermentation:/docker_persistent
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.103
+      cell-fermentation:
+        aliases:
+        - plc
+  sim-fermentation:
+    image: rsb-sim-fermentation:source-v0.1.0
+    build:
+      context: ./simulators/fermentation
+      dockerfile: Dockerfile
+    container_name: ics-sim-fermentation
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      PLC_HOST: plc
+      PLC_PORT: '502'
+      SIM_INTERVAL: '2'
+    networks:
+      cell-fermentation: null
+    depends_on:
+    - openplc-fermentation
+  openplc-conditioning:
+    image: rsb-openplc:source-v0.1.0
+    container_name: ics-plc-conditioning
+    restart: unless-stopped
+    cap_add:
+    - SYS_NICE
+    - IPC_LOCK
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/openplc/conditioning:/docker_persistent
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.104
+      cell-conditioning:
+        aliases:
+        - plc
+  sim-conditioning:
+    build:
+      context: ./simulators/conditioning
+      dockerfile: Dockerfile
+    container_name: ics-sim-conditioning
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      PLC_HOST: plc
+      PLC_PORT: '502'
+      SIM_INTERVAL: '2'
+      BACNET_DEVICE_ID: '5001'
+      BACNET_ADDRESS: 10.0.50.114/24
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.114
+        gw_priority: 1
+      cell-conditioning: null
+    depends_on:
+    - openplc-conditioning
+    image: rsb-sim-conditioning:source-v0.1.0
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -c
+      - import os,time; assert time.time()-os.path.getmtime('/tmp/bacnet-heartbeat') < 15
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+  openplc-packaging:
+    image: rsb-openplc:source-v0.1.0
+    container_name: ics-plc-packaging
+    restart: unless-stopped
+    cap_add:
+    - SYS_NICE
+    - IPC_LOCK
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/openplc/packaging:/docker_persistent
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.105
+      cell-packaging:
+        aliases:
+        - plc
+  sim-packaging:
+    build:
+      context: ./simulators/packaging
+      dockerfile: Dockerfile
+    container_name: ics-sim-packaging
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      PLC_HOST: plc
+      PLC_PORT: '502'
+      SIM_INTERVAL: '1'
+    networks:
+      cell-packaging: null
+    depends_on:
+    - openplc-packaging
+    image: rsb-sim-packaging:source-v0.1.0
+  openplc-utilities:
+    image: rsb-openplc:source-v0.1.0
+    container_name: ics-plc-utilities
+    restart: unless-stopped
+    cap_add:
+    - SYS_NICE
+    - IPC_LOCK
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/openplc/utilities:/docker_persistent
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.106
+      cell-utilities:
+        aliases:
+        - plc
+  sim-utilities:
+    build:
+      context: ./simulators/utilities
+      dockerfile: Dockerfile
+    container_name: ics-sim-utilities
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      PLC_HOST: plc
+      PLC_PORT: '502'
+      SIM_INTERVAL: '2'
+      DNP3_OUTSTATION_ADDR: '1'
+      DNP3_BIND: 10.0.50.116
+      DNP3_PORT: '20000'
+      DNP3_MASTER_ADDR: '2'
+    networks:
+      vlan50:
+        ipv4_address: 10.0.50.116
+        gw_priority: 1
+      cell-utilities: null
+    depends_on:
+    - openplc-utilities
+    image: rsb-sim-utilities:source-v0.1.0
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -c
+      - import os,time; assert time.time()-os.path.getmtime('/tmp/dnp3-heartbeat') < 15; assert any(r.split()[1].endswith(':4E20')
+        and r.split()[3]=='0A' for r in open('/proc/net/tcp').readlines()[1:])
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s

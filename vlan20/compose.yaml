@@ -1,0 +1,38 @@
+networks:
+  vlan20:
+    driver: macvlan
+    driver_opts:
+      parent: ${VLAN20_PARENT:?Set the Linux network interface}
+    ipam:
+      config:
+      - subnet: 10.0.20.0/24
+        gateway: 10.0.20.1
+services:
+  node-red:
+    image: rsb-nodered:source-v0.1.0
+    container_name: ics-nodered
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      NODE_RED_ENABLE_PROJECTS: 'false'
+    volumes:
+    - ${LAB_DATA_DIR}/node-red/data:/data
+    - ./flows/settings.js:/data/settings.js:ro
+    networks:
+      vlan20:
+        ipv4_address: 10.0.20.20
+    build:
+      context: ./nodered
+      args:
+        NODERED_BASE_IMAGE: ${NODERED_BASE_IMAGE:?Set the pinned Node-RED base}
+  mosquitto:
+    image: ${MOSQUITTO_IMAGE:?Set a pinned image reference}
+    container_name: ics-mqtt
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR}/mosquitto/config:/mosquitto/config:ro
+    networks:
+      vlan20:
+        ipv4_address: 10.0.20.21

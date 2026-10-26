@@ -1,0 +1,726 @@
+{
+  "schema_version": 1,
+  "description": "Public reference policy; default deny per zone; stateful replies; no WAN allowances.",
+  "rules": [
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "53",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "88",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "135",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "389",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "445",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "464",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "636",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "3268",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "3269",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "49152:65535",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "53",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "88",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "123",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "389",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "464",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "53",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "88",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "135",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "389",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "445",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "464",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "636",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "3268",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "3269",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "tcp",
+      "port": "49152:65535",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "53",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "88",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "123",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "389",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.10.2",
+      "protocol": "udp",
+      "port": "464",
+      "description": "Workstation to domain services"
+    },
+    {
+      "vlan": 10,
+      "source": "10.0.10.3",
+      "destination": "10.0.20.20",
+      "protocol": "tcp",
+      "port": "1880",
+      "description": "Corporate pivot"
+    },
+    {
+      "vlan": 10,
+      "source": "10.0.10.3",
+      "destination": "10.0.20.11",
+      "protocol": "tcp",
+      "port": "3389",
+      "description": "Corporate pivot"
+    },
+    {
+      "vlan": 10,
+      "source": "10.0.10.3",
+      "destination": "10.0.40.10",
+      "protocol": "tcp",
+      "port": "1881",
+      "description": "Corporate pivot"
+    },
+    {
+      "vlan": 10,
+      "source": "10.0.10.3",
+      "destination": "10.0.40.20",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Corporate pivot"
+    },
+    {
+      "vlan": 10,
+      "source": "10.0.10.0/24",
+      "destination": "10.0.30.40",
+      "protocol": "tcp",
+      "port": "8088",
+      "description": "Student scoreboard"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.40.12",
+      "protocol": "tcp",
+      "port": "3389",
+      "description": "Jump to engineering"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.20",
+      "protocol": "tcp",
+      "port": "22",
+      "description": "Intentional jump callback to attack VM"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.20",
+      "protocol": "tcp",
+      "port": "80",
+      "description": "Intentional jump callback to attack VM"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.20",
+      "protocol": "tcp",
+      "port": "443",
+      "description": "Intentional jump callback to attack VM"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.10.20",
+      "protocol": "tcp",
+      "port": "3389",
+      "description": "Intentional jump callback to attack VM"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.11",
+      "destination": "10.0.30.40",
+      "protocol": "tcp",
+      "port": "8088",
+      "description": "Jump scoreboard"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.30.20",
+      "protocol": "tcp",
+      "port": "8086",
+      "description": "Historian writer"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.50.101",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.50.104",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.50.105",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 20,
+      "source": "10.0.20.20",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.10",
+      "destination": "10.0.50.101",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.10",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.10",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.10",
+      "destination": "10.0.50.104",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.10",
+      "destination": "10.0.50.105",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.10",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.101",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.104",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.105",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.101",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.104",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.105",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.101",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.104",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.105",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "PLC Modbus"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.40",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "Scoreboard reads; port policy does not restrict Modbus functions"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.40",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "Scoreboard reads; port policy does not restrict Modbus functions"
+    },
+    {
+      "vlan": 30,
+      "source": "10.0.30.40",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "502",
+      "description": "Scoreboard reads; port policy does not restrict Modbus functions"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.30.20",
+      "protocol": "tcp",
+      "port": "8086",
+      "description": "Historian access"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.30.20",
+      "protocol": "tcp",
+      "port": "8086",
+      "description": "Historian access"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.30.20",
+      "protocol": "tcp",
+      "port": "8086",
+      "description": "Historian access"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.30.30",
+      "protocol": "tcp",
+      "port": "3000",
+      "description": "Engineering trends"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.101",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Engineering PLC setup"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.102",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Engineering PLC setup"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.103",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Engineering PLC setup"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.104",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Engineering PLC setup"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.105",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Engineering PLC setup"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.106",
+      "protocol": "tcp",
+      "port": "8080",
+      "description": "Engineering PLC setup"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.10",
+      "destination": "10.0.50.114",
+      "protocol": "udp",
+      "port": "47808",
+      "description": "BACnet unicast"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.114",
+      "protocol": "udp",
+      "port": "47808",
+      "description": "BACnet unicast"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.116",
+      "protocol": "tcp",
+      "port": "20000",
+      "description": "DNP3 polling and commands"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.12",
+      "destination": "10.0.50.116",
+      "protocol": "tcp",
+      "port": "20000",
+      "description": "DNP3 polling and commands"
+    },
+    {
+      "vlan": 40,
+      "source": "10.0.40.20",
+      "destination": "10.0.50.114",
+      "protocol": "udp",
+      "port": "47808",
+      "description": "Native Scada-LTS BACnet unicast"
+    }
+  ]
+}

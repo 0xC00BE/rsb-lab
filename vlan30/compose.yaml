@@ -1,0 +1,91 @@
+networks:
+  vlan30:
+    driver: macvlan
+    driver_opts:
+      parent: ${VLAN30_PARENT:?Set the Linux network interface}
+    ipam:
+      config:
+      - subnet: 10.0.30.0/24
+        gateway: 10.0.30.1
+services:
+  fuxa-scada:
+    image: rsb-fuxa:source-v0.1.0
+    build:
+      context: ../images/fuxa
+      args:
+        FUXA_BASE_IMAGE: ${FUXA_IMAGE:?Set a pinned image reference}
+    container_name: ics-fuxa-scada
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-scada/appdata:/usr/src/app/FUXA/server/_appdata
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-scada/db:/usr/src/app/FUXA/server/_db
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-scada/logs:/usr/src/app/FUXA/server/_logs
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-scada/images:/usr/src/app/FUXA/server/_images
+    networks:
+      vlan30:
+        ipv4_address: 10.0.30.10
+  influxdb:
+    image: ${INFLUXDB_IMAGE:?Set a pinned image reference}
+    container_name: ics-influxdb
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD:?Run init}
+      DOCKER_INFLUXDB_INIT_ORG: brewery
+      DOCKER_INFLUXDB_INIT_BUCKET: brewery
+      DOCKER_INFLUXDB_INIT_RETENTION: 30d
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN:?Run init}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/influxdb/data:/var/lib/influxdb2
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/influxdb/config:/etc/influxdb2
+    networks:
+      vlan30:
+        ipv4_address: 10.0.30.20
+  grafana:
+    image: ${GRAFANA_IMAGE:?Set a pinned image reference}
+    container_name: ics-grafana
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:?Run init}
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN:?Run init}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/grafana/data:/var/lib/grafana
+    - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      vlan30:
+        ipv4_address: 10.0.30.30
+    depends_on:
+    - influxdb
+  pentest-status:
+    image: rsb-pentest-status:source-v0.1.0
+    build:
+      context: ../tools/pentest-status
+      dockerfile: Dockerfile
+    container_name: rsb-pentest-status
+    restart: unless-stopped
+    environment:
+      PORT: '8088'
+      POLL_TIMEOUT: '1.5'
+      READ_ATTEMPTS: '3'
+      STALE_AFTER: '30'
+      TZ: ${TZ:-Europe/Oslo}
+    read_only: true
+    user: 10001:10001
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    tmpfs:
+    - /tmp:rw,noexec,nosuid,nodev
+    networks:
+      vlan30:
+        ipv4_address: 10.0.30.40
