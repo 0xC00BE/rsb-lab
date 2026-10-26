@@ -1,0 +1,93 @@
+name: Publish validated preview
+
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-preview.yaml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-v0.1.0-preview.2
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == '0xC00BE/rsb-lab' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    env:
+      SOURCE_SHA: c8103ee9c1f4db9a0461d8cc24b44a43a161ac6d
+      SOURCE_TREE: 8760e44ac5f3ad765403c88108eb63181be1d62c
+      TAG: v0.1.0-preview.2
+      GH_REPO: 0xC00BE/rsb-lab
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c8103ee9c1f4db9a0461d8cc24b44a43a161ac6d
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify the audited source and successful hosted validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$SOURCE_TREE"
+          test "$(gh api repos/$GH_REPO/actions/runs/40354316367 --jq .head_sha)" = "$SOURCE_SHA"
+          test "$(gh api repos/$GH_REPO/actions/runs/40354316367 --jq .conclusion)" = success
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo 'This release already exists; refusing to replace it.' >&2
+            exit 1
+          fi
+      - name: Recheck release source
+        run: |
+          set -euo pipefail
+          python -m pip install -r requirements-dev.txt
+          python tools/validate_release.py
+          python -m unittest discover -s tests -p 'test_*.py'
+          python -m unittest discover -s tools/pentest-status -p 'test_*.py'
+          python -m unittest discover -s vlan50/simulators/fermentation -p 'test_*.py'
+      - name: Package only committed public source
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rsb-release-assets
+          ZIP="/tmp/rsb-release-assets/rsb-lab-$TAG.zip"
+          git archive --format=zip --prefix="rsb-lab-$TAG/" --output="$ZIP" "$SOURCE_SHA"
+          cd /tmp/rsb-release-assets
+          sha256sum "rsb-lab-$TAG.zip" > "rsb-lab-$TAG.zip.sha256"
+          sha256sum -c "rsb-lab-$TAG.zip.sha256"
+          python - <<'PY'
+          import os, zipfile
+          from pathlib import PurePosixPath
+          with zipfile.ZipFile('rsb-lab-' + os.environ['TAG'] + '.zip') as z:
+              assert z.testzip() is None
+              files = [n for n in z.namelist() if not n.endswith('/')]
+              assert len(files) == 125, len(files)
+              for n in files:
+                  p = PurePosixPath(n)
+                  assert not set(p.parts) & {'.git', '.local', '__pycache__'}
+                  assert p.name != '.env'
+                  assert p.suffix.lower() not in {'.iso', '.vmdk', '.ova', '.exe', '.pem', '.key', '.sql'}
+          print('Verified 125 committed public source files.')
+          PY
+      - name: Create draft with both assets, then publish as prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ZIP="/tmp/rsb-release-assets/rsb-lab-$TAG.zip"
+          gh release create "$TAG" "$ZIP" "$ZIP.sha256" \
+            --target "$SOURCE_SHA" --title "RSB Brewery ICS Lab $TAG" \
+            --notes-file RELEASE_NOTES.md --draft --prerelease --latest=false
+          test "$(gh api repos/$GH_REPO/releases/tags/$TAG --jq '.assets | length')" = 2
+          gh release edit "$TAG" --draft=false
+          gh release view "$TAG" --json url,isPrerelease,isDraft,assets
+
