@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "views": {
+    "v_rsb_brewhouse": [
+      "Brewhouse"
+    ],
+    "v_rsb_conditioning": [
+      "Conditioning"
+    ],
+    "v_rsb_factory_brewhouse": [
+      "Brewhouse Factory SCADA (BH-01)"
+    ],
+    "v_rsb_factory_conditioning": [
+      "Conditioning Factory SCADA (BBT-01..02)"
+    ],
+    "v_rsb_factory_fermentation": [
+      "Fermentation Factory SCADA (FV-01..04)"
+    ],
+    "v_rsb_factory_packaging": [
+      "Packaging Factory SCADA (PKG-01)"
+    ],
+    "v_rsb_factory_utilities": [
+      "Utilities Factory SCADA (UT-01)"
+    ],
+    "v_rsb_fermentation": [
+      "Fermentation"
+    ],
+    "v_rsb_final_brewhouse": [
+      "Brewhouse \u00b7 Final Stencils"
+    ],
+    "v_rsb_final_conditioning": [
+      "Conditioning \u00b7 Final Stencils"
+    ],
+    "v_rsb_final_fermentation": [
+      "Fermentation \u00b7 Final Stencils"
+    ],
+    "v_rsb_final_packaging": [
+      "Packaging \u00b7 Final Stencils"
+    ],
+    "v_rsb_final_rawmaterials": [
+      "Raw Materials \u00b7 Final Stencils"
+    ],
+    "v_rsb_final_utilities": [
+      "Utilities \u00b7 Final Stencils"
+    ],
+    "v_rsb_integrated_overview": [
+      "RSB Plant Overview"
+    ],
+    "v_rsb_packaging": [
+      "Packaging"
+    ],
+    "v_rsb_process_brew": [
+      "Brewhouse Flow"
+    ],
+    "v_rsb_process_cond": [
+      "Conditioning Flow"
+    ],
+    "v_rsb_process_ferm": [
+      "Fermentation Flow"
+    ],
+    "v_rsb_process_overview": [
+      "RSB Brewery Process Overview"
+    ],
+    "v_rsb_process_pack": [
+      "Packaging Flow"
+    ],
+    "v_rsb_process_raw": [
+      "Raw Materials Flow"
+    ],
+    "v_rsb_process_util": [
+      "Utilities & Boiler Flow"
+    ],
+    "v_rsb_raw_materials": [
+      "Raw Materials"
+    ],
+    "v_rsb_rawmaterials_factory": [
+      "Raw Materials Factory SCADA (RM-01)"
+    ],
+    "v_rsb_utilities": [
+      "Utilities"
+    ]
+  }
+}

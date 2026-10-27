@@ -32,7 +32,7 @@ requirements if you distribute built images or modified upstream software:
 
 Windows and pfSense are installed separately by the operator and retain their
 own terms. No live VPN credentials, third-party escalation tool or qModMaster
-binary is included. The complete FUXA project and its 47 bundled artwork files
+binary is included. The complete FUXA project and its 26 current bundled artwork files
 are included under MIT with the project owner's redistribution authorization
 of 2026-10-26. Hashes and embedded reference counts are recorded in
 `projects/fuxa/assets-manifest.json`.

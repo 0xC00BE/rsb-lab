@@ -1,4 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 110" role="img" aria-labelledby="t d">
-  <title id="t">Next-cell handoff</title>
-  <desc id="d">Explicit process boundary/handoff arrow between brewery cells.</desc>
-<defs><linearGradient id="steelVertST" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f5f7"/><stop offset="1" stop-color="#aab6c0"/></linearGradient></defs><g id="next-cell"><line x1="70" y1="20" x2="70" y2="90" stroke="#33404c" stroke-width="3" stroke-dasharray="6,4"/><rect x="18" y="46" width="110" height="16" fill="url(#steelVertST)" stroke="#33404c" stroke-width="2.6"/><path d="M128 38 L160 54 L128 70 Z" fill="#2ecc71" stroke="#33404c" stroke-width="2.6"/><rect x="74.0" y="84.0" width="32" height="7" rx="1.2" fill="#20282f" stroke="#5b6873" stroke-width="1"/></g></svg>

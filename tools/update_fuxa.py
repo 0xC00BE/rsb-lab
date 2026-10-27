@@ -10,6 +10,19 @@ from fuxa_project import assemble
 from lab import check_configuration
 
 
+def recognized_project(current, source):
+    legacy = json.loads((Path(__file__).resolve().parents[1] /
+                         'projects/fuxa/legacy-views.json').read_text())['views']
+    known = {key: set(names) for key, names in legacy.items()}
+    for view in source['hmi']['views']:
+        known.setdefault(view['id'], set()).add(view['name'])
+    views = current.get('hmi', {}).get('views', [])
+    ids = [view.get('id') for view in views]
+    return (bool(views) and len(set(ids)) == len(ids)
+            and all(view.get('name') in known.get(view.get('id'), set()) for view in views)
+            and set(current.get('devices', {})) == set(source['devices']))
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply',action='store_true',help='Back up and replace the known RSB projects.')
@@ -23,9 +36,10 @@ def main():
         current=api(base,'/api/project',token=token)
         old_ids={v['id'] for v in current['hmi']['views']}
         new_ids={v['id'] for v in source['hmi']['views']}
-        if not old_ids or not old_ids.issubset(new_ids) or set(current['devices'])!=set(source['devices']):
+        if not recognized_project(current, source):
             raise RuntimeError(role+': project contains unrecognized views or devices; refusing to replace it.')
-        print(f'{role}: {len(old_ids)} views -> {len(new_ids)} views; private credentials preserved.')
+        print(f'{role}: {len(old_ids)} views -> {len(new_ids)} current dashboards; '
+              f'{len(old_ids-new_ids)} obsolete views removed; private credentials preserved.')
         if not args.apply:continue
         backup_dir=state/role/'backups';backup_dir.mkdir(exist_ok=True,mode=0o700)
         backup=backup_dir/('project-before-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')+'.json')

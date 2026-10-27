@@ -12,7 +12,9 @@ const {chromium}=require('playwright');
   for(const [role,address] of [['hmi','10.0.40.10'],['scada','10.0.30.10']]) {
    const base=`http://${address}:1881`;
    const project=await fetch(base+'/api/project').then(r=>{if(!r.ok)throw Error('Project read failed');return r.json()});
-   if(project.hmi.views.length!==26)throw Error(role+': expected 26 views');
+   const names=['Dashboard-P1','Dashboard-P2','Dashboard-P3','Dashboard-P4'];
+   if(JSON.stringify(project.hmi.views.map(v=>v.name))!==JSON.stringify(names))throw Error(role+': expected only Dashboard-P1 through P4');
+   if(project.hmi.layout.start!==project.hmi.views[0].id)throw Error(role+': incorrect start dashboard');
    const page=await browser.newPage({viewport:{width:1800,height:1100}});
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.route('**/*',route=>{
@@ -48,5 +50,5 @@ const {chromium}=require('playwright');
    await page.close();
   }
  } finally {await browser.close()}
- console.log('All 52 FUXA view renders passed with bundled images and external requests blocked.');
+ console.log('All eight current FUXA dashboard renders passed with bundled images and external requests blocked.');
 })().catch(error=>{console.error(error);process.exit(1)});

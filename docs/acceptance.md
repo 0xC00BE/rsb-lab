@@ -8,7 +8,7 @@ operator report. Keep credentials, keys and raw captures out of public reports.
 | Build | All images build from the supplied source and lock manifest. |
 | Startup | Every service returns after a clean reboot. |
 | PLCs | Six programs compile, start automatically and provide changing values. |
-| Visual project | All 26 FUXA views load with images, navigation and live values on both roles. |
+| Visual project | Only Dashboard-P1 through P4 load with images, navigation and live values on both roles. |
 | SCADA | Eight sources and 159 points import; required points update. |
 | Historian | Six measurement groups and all eight Grafana panels have fresh data. |
 | Domain | AD/DNS ready; three members join, receive policy and pass secure-channel checks. |

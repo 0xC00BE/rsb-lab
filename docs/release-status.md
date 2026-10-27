@@ -1,6 +1,6 @@
-# v0.1.0 release status
+# v0.1.1 release status
 
-Verified on 2026-10-26 for `0xC00BE/rsb-lab`. Original material and the authorized
+VMware reference build verified on 2026-10-26; FUXA updated on 2026-10-27 for `0xC00BE/rsb-lab`. Original material and the authorized
 FUXA artwork use MIT; third-party components retain their own terms.
 
 An independent six-VM VMware environment was built using the repository's provider,
@@ -12,8 +12,9 @@ for tested versions, evidence and limits.
 ## Included and verified
 
 - Six brewery cells, persistent PLC startup, Modbus TCP, BACnet and DNP3.
-- Complete FUXA project: 26 views, all 47 artwork files, 52 successful browser
-  renders across both roles, live values and protected anonymous viewing.
+- Current FUXA project: only Dashboard-P1 through P4, all 26 artwork files,
+  updated navigation and production logo. See the dated validation report for
+  the dashboard update checks and the earlier full VMware build.
 - Scada-LTS: eight sources/159 points and stored samples for 17 native points.
 - Six-cell historian, eight Grafana panels and the engineering message channel.
 - A new domain, three joined workstations, role services, unique Windows identities,
@@ -22,7 +23,7 @@ for tested versions, evidence and limits.
   intended access and representative blocked paths. Both roles worked after reboot.
 - Isolated VMware networks, bounded new resources, host forwarding protection,
   offline cold startup and coordinated six-VM snapshot recovery.
-- Source checks, 18 unit tests, Windows source parsing and committed dependency pins.
+- Source checks, 19 unit tests, Windows source parsing and committed dependency pins.
 
 ## Practical limits
 

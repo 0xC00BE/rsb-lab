@@ -63,7 +63,7 @@ FUXA anonymous viewers can read values; project saves and live value writes requ
 an administrator. SCADA's FUXA BACnet device is disabled because its binding
 belongs to the engineering HMI (.40.10:47809).
 
-The default FUXA project includes all 26 views, the brewery logo and equipment
+The default FUXA project includes only Dashboard-P1 through P4, the brewery logo and equipment
 artwork. The initializer assembles verified bundled images; no external asset
 download is needed. See the [visual project](../projects/fuxa/README.md) for a
 manual export. The Scada-LTS exports contain six

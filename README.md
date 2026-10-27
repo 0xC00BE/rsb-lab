@@ -1,10 +1,12 @@
 # RSB Brewery ICS Lab
 
+<p align="center"><img src="projects/fuxa/assets/8a8b99411a0cc214a32a.png" width="220" alt="Really Suspicious Brewery logo"></p>
+
 A segmented industrial cybersecurity training lab: six brewery process cells,
 OpenPLC controllers, Modbus TCP, BACnet/IP, DNP3, FUXA, Scada-LTS, a historian,
 and an optional Windows domain environment.
 
-**v0.1.0 — verified VMware source release.** The OT services and Windows domain
+**v0.1.1 — current production FUXA dashboards.** The OT services and Windows domain
 have been reconstructed in a separate isolated VMware lab from this source,
 with clean OS bases. See the dated [validation report](VALIDATION.md) for the
 checks completed and remaining limits. The optional VMware adapter creates the
@@ -24,7 +26,7 @@ Proxmox deployment is not yet tested. Read the
   [firewall policy](provisioning/firewall/policy.json), local lifecycle tools,
   reset guidance, release checks, and a [porting guide](docs/porting-guide.md).
 
-The complete FUXA project includes **26 views and all 47 artwork assets**.
+The complete FUXA project includes **Dashboard-P1, P2, P3 and P4, with all 26 current artwork assets**.
 Browse the [live-render gallery](docs/gallery.md) and the
 [optional administrator/student VPN guide](docs/vpn.md).
 

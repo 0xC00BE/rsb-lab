@@ -6,6 +6,29 @@ files, fresh private state and clean OS bases. Its firewall base was reset to ve
 defaults and stripped of prior lab/VPN/operator state before repository bootstrap.
 Original lab machines, source templates and outside networking remained unchanged.
 
+## Dashboard correction — 2026-10-27 (v0.1.1)
+
+Read-only exports from the current production HMI and SCADA confirmed that the
+active project contains only Dashboard-P1 through P4. The HMI visual definitions
+were bundled with their 26 unique PNG assets (38 embedded references). Existing
+release device definitions matched exactly. Production configuration was unchanged.
+The release copy fixes a deleted start-view reference and the P4 menu spelling.
+
+Both running release-lab roles were upgraded using `tools/update_fuxa.py --apply`.
+Each old 26-view project was backed up privately, replaced with the four current
+dashboards, and verified by authenticated readback. Editor credentials remained
+unchanged. All eight headless dashboard renders passed; all referenced images
+decoded, no browser errors occurred, and external requests were blocked. All four
+HMI screenshots were visually inspected and replaced the old gallery. P1 contains
+two unused empty image elements from production; these have no image source.
+
+The six Modbus connections returned live values on both roles; HMI BACnet also
+returned live values. Anonymous value writes remained rejected. Local source
+validation and 19 unit tests passed, including known-legacy migration acceptance
+and refusal of an unknown custom dashboard. The earlier full VMware build and
+recovery evidence below belongs to v0.1.0; it was not repeated for this visual update.
+The Jump-host escalation exclusion remains unchanged.
+
 ## Tested combination
 
 - vCenter Server 8.0.3 build 24262322; ESXi 8.0.0 build 20513097; x86-64 guests.
@@ -29,7 +52,7 @@ All image builds completed from repository files. Six PLC programs compiled,
 started and retained automatic startup. Fresh application state, credentials,
 projects and directory roles were generated without a runtime configuration donor.
 
-- Both FUXA roles imported all 26 views and 47 bundled artwork assets. All **52
+- In v0.1.0, both FUXA roles imported all 26 older views and 47 bundled artwork assets. All **52
   headless renders** passed: expected images decoded, external HTTP requests were
   blocked, no page errors or known encoding artifacts occurred. Selected layouts
   were visually inspected; examples are in the [gallery](docs/gallery.md).

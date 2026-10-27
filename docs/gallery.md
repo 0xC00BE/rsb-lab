@@ -1,35 +1,27 @@
-# Brewery screens
+# Current brewery dashboards
 
-These are browser renders from the VMware reference environment, using the
-bundled FUXA project and live process values. All 26 views on both instances
-passed image decoding and browser-error checks with external requests blocked.
-The project includes the logo and every equipment image; no private asset
-directory or external image service is required.
+These screenshots show the current production-style dashboards installed in the
+VMware release lab on 2026-10-27, with live simulated values. The installation
+contains only these four dashboards. All eight renders across HMI and SCADA
+passed image-decoding and browser-error checks with external requests blocked.
 
-## Raw materials
+## Dashboard-P1 — Raw materials and brewing house
 
-![Raw-materials process screen](gallery/rawmaterials.png)
+![Dashboard-P1: Raw materials and brewing house](gallery/dashboard-p1.png)
 
-## Brewhouse
+## Dashboard-P2 — Fermentation and conditioning
 
-![Brewhouse process screen](gallery/brewhouse.png)
+![Dashboard-P2: Fermentation and conditioning](gallery/dashboard-p2.png)
 
-## Fermentation
+## Dashboard-P3 — Packaging
 
-![Fermentation process screen](gallery/fermentation.png)
+![Dashboard-P3: Packaging](gallery/dashboard-p3.png)
 
-## Conditioning
+## Dashboard-P4 — Utilities
 
-![Conditioning process screen](gallery/conditioning.png)
+![Dashboard-P4: Utilities](gallery/dashboard-p4.png)
 
-## Packaging
-
-![Packaging process screen](gallery/packaging.png)
-
-## Utilities
-
-![Utilities process screen](gallery/utilities.png)
-
-See the [FUXA project instructions](../projects/fuxa/README.md) for a native export
-containing every view and image. Screenshots show a running simulation, so values
-will vary between installations.
+The [FUXA project instructions](../projects/fuxa/README.md) cover native export
+and upgrading an older installation. Screenshots show a running simulation;
+values vary. The same [brewery logo](../projects/fuxa/assets/8a8b99411a0cc214a32a.png)
+is used in the repository README and is available as a reusable project icon.

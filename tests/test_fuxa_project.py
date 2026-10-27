@@ -8,19 +8,28 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from fuxa_project import assemble
+from fuxa_project import assemble, DASHBOARDS
+from update_fuxa import recognized_project
 
 
 class VisualProjectTests(unittest.TestCase):
-    def test_complete_project_has_all_assets_and_original_views(self):
+    def test_current_project_contains_only_four_dashboards_and_bundled_artwork(self):
         result=assemble()
-        old=json.loads((ROOT/'projects/fuxa/process.fuxap').read_text())
-        self.assertEqual(len(result['hmi']['views']),26)
-        self.assertTrue({v['id'] for v in old['hmi']['views']}.issubset({v['id'] for v in result['hmi']['views']}))
+        self.assertEqual(tuple(v['name'] for v in result['hmi']['views']), DASHBOARDS)
         source=json.dumps(result)
         self.assertNotIn('rsb-asset:',source)
-        self.assertEqual(source.count('data:image/'),80)
+        self.assertEqual(source.count('data:image/'),38)
         self.assertNotIn('\ufffd',source)
+
+    def test_upgrade_accepts_known_legacy_views_and_rejects_custom_views(self):
+        result=assemble()
+        legacy=json.loads((ROOT/'projects/fuxa/legacy-views.json').read_text())['views']
+        current={'devices':result['devices'], 'hmi':{'views':[
+            {'id':key,'name':names[0]} for key,names in legacy.items()]}}
+        self.assertTrue(recognized_project(current,result))
+        self.assertTrue(recognized_project(result,result))
+        current['hmi']['views'].append({'id':'custom-dashboard','name':'Operator custom screen'})
+        self.assertFalse(recognized_project(current,result))
 
     def test_corrupt_asset_fails_before_import(self):
         with tempfile.TemporaryDirectory() as tmp:

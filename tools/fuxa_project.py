@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_REF = re.compile(r'rsb-asset:([a-f0-9]{20}\.(?:png|svg))')
+DASHBOARDS = ('Dashboard-P1', 'Dashboard-P2', 'Dashboard-P3', 'Dashboard-P4')
 
 
 def assemble(directory=None):
@@ -62,10 +63,16 @@ def assemble(directory=None):
         raise ValueError('Artwork reference counts differ from the manifest')
     views = project['hmi']['views']
     ids = [v['id'] for v in views]
-    if len(ids) != 26 or len(set(ids)) != len(ids):
-        raise ValueError('Expected 26 distinct FUXA views')
-    if project['hmi']['layout']['start'] not in ids:
-        raise ValueError('FUXA start view does not exist')
+    if len(ids) != 4 or len(set(ids)) != 4 or tuple(v['name'] for v in views) != DASHBOARDS:
+        raise ValueError('Expected only Dashboard-P1 through Dashboard-P4, in order')
+    layout = project['hmi']['layout']
+    if layout['start'] != ids[0]:
+        raise ValueError('FUXA must start at Dashboard-P1')
+    items = layout['navigation']['items']
+    if [(item.get('view'), item.get('text')) for item in items] != list(zip(ids, DASHBOARDS)):
+        raise ValueError('FUXA navigation must contain only the four current dashboards')
+    if any(item.get('children') or item.get('link') for item in items):
+        raise ValueError('Unexpected nested or external dashboard navigation')
     return project
 
 
@@ -80,7 +87,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open('x', encoding='utf-8', newline='\n') as output:
         json.dump(project, output, ensure_ascii=False, separators=(',', ':'))
-    print('Assembled 26 views with all verified artwork:', args.output)
+    print('Assembled Dashboard-P1 through P4 with all verified artwork:', args.output)
 
 
 if __name__ == '__main__':

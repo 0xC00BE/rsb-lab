@@ -1,22 +1,38 @@
-# Complete brewery visual project
+# Current brewery dashboards
 
-The default project contains 26 views: six black-background equipment pages,
-six factory pages, seven process-flow pages and seven original value/overview
-pages. It includes the brewery logo and all equipment, pipe and valve artwork.
+The default installation contains **only Dashboard-P1, Dashboard-P2,
+Dashboard-P3 and Dashboard-P4**, exported from the current production HMI.
+The start page is P1; the navigation contains these four dashboards in order.
+The release corrects a stale start-page reference and the P4 menu spelling.
 
-`project.json` stores the native configuration with deduplicated asset references.
-`assets-manifest.json` records the 47 bundled images, hashes and reference counts.
-The artwork is distributed under MIT with the owner's permission. No external
-image download or original private directory is needed.
+`project.json` stores native configuration with deduplicated asset references.
+`assets-manifest.json` records the 26 current PNG images, hashes and reference
+counts. Artwork is MIT licensed with the owner’s permission. No external image
+download or original private directory is needed. The logo in these screens
+is also the repository’s [logo and reusable icon](assets/8a8b99411a0cc214a32a.png).
 
-The application initializer assembles the complete project automatically. To
-produce a self-contained native file for manual import:
+The initializer assembles the project automatically. For a self-contained native
+file for manual import:
 
 ```bash
-python3 tools/fuxa_project.py --output .local/exports/rsb-complete.fuxap
+python3 tools/fuxa_project.py --output .local/exports/rsb-current.fuxap
 ```
 
-The earlier compact 14-view export remains in `process.fuxap` for comparison.
-Use the assembled export for the finished visual experience. The two application
-roles retain separate local administrator credentials. BACnet is enabled on the
-engineering HMI and disabled on the Operations viewer's copied device binding.
+## Upgrade an existing release installation
+
+With temporary management shims present, first review the replacement:
+
+```bash
+python3 tools/update_fuxa.py
+python3 tools/update_fuxa.py --apply
+```
+
+The upgrade recognizes the earlier release dashboards, backs up each project
+under its private state directory, then replaces the entire visual project.
+Old views are removed rather than retained beside P1–P4. Editor credentials stay
+unchanged. Unrecognized custom views or device IDs stop the upgrade for review.
+`legacy-views.json` is only a migration allowlist; it contains no old dashboards.
+
+The earlier compact `process.fuxap` export and unused legacy artwork have been
+removed. BACnet stays enabled on the engineering HMI and disabled on the
+Operations viewer’s copied binding. Production itself is read only during export.
