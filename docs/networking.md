@@ -47,7 +47,9 @@ sudo python3 provisioning/linux/host-isolation.py --install-service
 
 The service rejects forwarding through the four OT parents and their optional
 management shims. The private PLC/simulator bridges continue to work. Disconnect
-the temporary build adapter and firewall WAN before handing the lab to students.
+the temporary build adapter before handing the lab to students. Leave firewall
+WAN disconnected for offline use; enable only the documented VPN listeners for
+optional [remote access](vpn.md).
 
 ## Firewall
 
@@ -73,8 +75,8 @@ lab states before negative-path tests. Do not expose lab services on WAN.
 The JSON policy is the common porting contract; pfSense PHP is a reference
 adapter tested on a fresh pfSense CE 2.9.0 firewall. Other firewalls can implement
 the same stateful allow paths followed by per-zone default deny. Same-subnet
-traffic does not traverse this firewall. TCP/502 permission allows Modbus writes
-as well as reads; the scoreboard's application is read-only, not its firewall port.
+traffic does not traverse this firewall. Detailed exercise protocol behavior is
+in the optional [instructor material](../exercises/instructor/guide.md).
 
 Use directed BACnet unicast. Cross-zone broadcast discovery and BBMD are not
 configured. Simulator private bridge networks remain internal to the Docker host.

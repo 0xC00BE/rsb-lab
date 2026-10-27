@@ -27,3 +27,22 @@ jobs:
           done
       - name: Check shell scripts
         run: bash -n vlan50/deploy-openplc.sh
+  windows-source:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse Windows provisioning sources without executing them
+        shell: powershell
+        run: |
+          $failures = @()
+          $sources = @(Get-ChildItem -Recurse -Filter *.ps1)
+          foreach ($sourceFile in $sources) {
+            $tokens = $null
+            $parseErrors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($sourceFile.FullName, [ref]$tokens, [ref]$parseErrors) | Out-Null
+            foreach ($parseError in $parseErrors) {
+              $failures += ($sourceFile.FullName + ': ' + $parseError.Message)
+            }
+          }
+          if ($failures.Count) { $failures | Write-Error; exit 1 }
+          Write-Host ('Parsed ' + $sources.Count + ' PowerShell sources; no provisioning script was executed.')

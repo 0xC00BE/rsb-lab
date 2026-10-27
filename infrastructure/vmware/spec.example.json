@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "vcenter": "vcenter.example.org",
+  "vcenter_certificate": null,
+  "host": "esxi.example.org",
+  "datastore": "LabDatastore",
+  "parent_folder": "RSB-Release",
+  "instance": "acceptance",
+  "vm_prefix": "RSBA",
+  "switch": "vSwitch-RSB-Acceptance",
+  "port_group_prefix": "RSBA",
+  "upstream_port_group": "LAB",
+  "resource_pool_parent": "Resources",
+  "memory_limit_mib": 40960,
+  "cpu_limit_mhz": 12000,
+  "templates": {
+    "Firewall": "Clean-pfSense-CE-2.9",
+    "Docker": "Clean-Ubuntu-24.04",
+    "AD": "Clean-Windows-Server-2019",
+    "Corporate": "Clean-Windows-10",
+    "Jump": "Clean-Windows-10",
+    "Engineering": "Clean-Windows-10"
+  }
+}

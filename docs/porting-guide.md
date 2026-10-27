@@ -16,6 +16,9 @@ Compose files. `lab/topology.json` and the firewall policy define the behavior.
 3. Create an x86-64 Linux Docker guest with management plus four OT adapters.
    Discover its Linux interface names; configure `.env` from those actual names.
    Ensure the bridge and any guest firewall permit the additional macvlan MACs.
+   If enabling the student VPN, its Corporate bridge must also carry additional
+   client MACs. Keep the common VPN role policy and run its positive/negative
+   checks; do not silently replace the student TAP profile with TUN.
 4. For the full scope, create the four Windows guests and optional attack VM.
    Attach each to its one lab zone, then follow the Windows guide.
 5. Run the acceptance checklist. Record Proxmox version, virtual NIC model,

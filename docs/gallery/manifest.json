@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "source": "Anonymous HMI browser renders; all 26 views verified on both instances",
+  "images": [
+    {
+      "path": "rawmaterials.png",
+      "sha256": "42ddee7e94e103ce62796eaf25b44f30ec8279b313ceacbf93df1e5f02f94644",
+      "bytes": 188142
+    },
+    {
+      "path": "brewhouse.png",
+      "sha256": "0effa84a9baabf8b7724c3aac75dbe591d7576f87a5b124a83fb0f0eda579f9b",
+      "bytes": 195843
+    },
+    {
+      "path": "fermentation.png",
+      "sha256": "1ed15e59bb723aa7fb9e1311d87a6a7c903ddb8bc350bc2e6bf4397ea0f428dd",
+      "bytes": 190099
+    },
+    {
+      "path": "conditioning.png",
+      "sha256": "dc9434785184c45db771be2684c8f287629d259df89fcb743c3dd8c01e83384b",
+      "bytes": 180337
+    },
+    {
+      "path": "packaging.png",
+      "sha256": "41850da13b34d58258d017edfa1f925a75923989f5f66c249340425fee1574ed",
+      "bytes": 169425
+    },
+    {
+      "path": "utilities.png",
+      "sha256": "614aa873e65a1aa104cfc20ba814c33e4d125ce6020fe8ece3e187c2f2ef30bf",
+      "bytes": 180445
+    }
+  ]
+}

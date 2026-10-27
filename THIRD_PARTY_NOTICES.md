@@ -31,11 +31,13 @@ requirements if you distribute built images or modified upstream software:
 | Python and base OS packages | https://docs.python.org/3/license.html |
 
 Windows and pfSense are installed separately by the operator and retain their
-own terms. No OpenVPN material, third-party escalation tool, qModMaster binary,
-or alternative stencil bundle is included. The larger artwork-heavy FUXA export
-was excluded pending a separate embedded-asset review.
+own terms. No live VPN credentials, third-party escalation tool or qModMaster
+binary is included. The complete FUXA project and its 47 bundled artwork files
+are included under MIT with the project owner's redistribution authorization
+of 2026-10-26. Hashes and embedded reference counts are recorded in
+`projects/fuxa/assets-manifest.json`.
 
 Upstream image references, source commit and direct package pins are recorded in
 `lab/upstreams.lock.json`. Transitive dependency licenses and complete software
 bills of materials should be generated when publishing built container images;
-this source preview does not claim a complete image-license audit.
+this source release does not claim a complete image-license audit.

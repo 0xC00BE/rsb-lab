@@ -36,6 +36,11 @@ late for the package-installation stage. Verify package installation before mark
 the bootstrap ready; do not treat the presence of a final unconditional marker as
 proof of successful provisioning.
 
+The temporary build adapter is optional in the VMware network seed. A
+disconnected download adapter should not delay normal offline boot while the
+system waits for DHCP. Wait for Docker and the host isolation service to become
+ready before running startup checks.
+
 ## Application initialization
 
 - FUXA's pinned base lacked Modbus/BACnet drivers. The derived image installs

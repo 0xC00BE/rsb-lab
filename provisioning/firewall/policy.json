@@ -248,7 +248,7 @@
       "destination": "10.0.20.20",
       "protocol": "tcp",
       "port": "1880",
-      "description": "Corporate pivot"
+      "description": "Corporate application access"
     },
     {
       "vlan": 10,
@@ -256,7 +256,7 @@
       "destination": "10.0.20.11",
       "protocol": "tcp",
       "port": "3389",
-      "description": "Corporate pivot"
+      "description": "Corporate application access"
     },
     {
       "vlan": 10,
@@ -264,7 +264,7 @@
       "destination": "10.0.40.10",
       "protocol": "tcp",
       "port": "1881",
-      "description": "Corporate pivot"
+      "description": "Corporate application access"
     },
     {
       "vlan": 10,
@@ -272,7 +272,7 @@
       "destination": "10.0.40.20",
       "protocol": "tcp",
       "port": "8080",
-      "description": "Corporate pivot"
+      "description": "Corporate application access"
     },
     {
       "vlan": 10,
@@ -296,7 +296,7 @@
       "destination": "10.0.10.20",
       "protocol": "tcp",
       "port": "22",
-      "description": "Intentional jump callback to attack VM"
+      "description": "Jump client connections"
     },
     {
       "vlan": 20,
@@ -304,7 +304,7 @@
       "destination": "10.0.10.20",
       "protocol": "tcp",
       "port": "80",
-      "description": "Intentional jump callback to attack VM"
+      "description": "Jump client connections"
     },
     {
       "vlan": 20,
@@ -312,7 +312,7 @@
       "destination": "10.0.10.20",
       "protocol": "tcp",
       "port": "443",
-      "description": "Intentional jump callback to attack VM"
+      "description": "Jump client connections"
     },
     {
       "vlan": 20,
@@ -320,7 +320,7 @@
       "destination": "10.0.10.20",
       "protocol": "tcp",
       "port": "3389",
-      "description": "Intentional jump callback to attack VM"
+      "description": "Jump client connections"
     },
     {
       "vlan": 20,
@@ -584,7 +584,7 @@
       "destination": "10.0.50.102",
       "protocol": "tcp",
       "port": "502",
-      "description": "Scoreboard reads; port policy does not restrict Modbus functions"
+      "description": "Status-board protocol access"
     },
     {
       "vlan": 30,
@@ -592,7 +592,7 @@
       "destination": "10.0.50.103",
       "protocol": "tcp",
       "port": "502",
-      "description": "Scoreboard reads; port policy does not restrict Modbus functions"
+      "description": "Status-board protocol access"
     },
     {
       "vlan": 30,
@@ -600,7 +600,7 @@
       "destination": "10.0.50.106",
       "protocol": "tcp",
       "port": "502",
-      "description": "Scoreboard reads; port policy does not restrict Modbus functions"
+      "description": "Status-board protocol access"
     },
     {
       "vlan": 40,

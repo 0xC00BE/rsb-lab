@@ -1,6 +1,6 @@
 {
   "resolved_on": "2026-10-26",
-  "note": "Registry-resolved candidate images, not recovered live deployment digests. npm direct packages pinned; transitive dependency locking remains open.",
+  "note": "Registry-resolved pins verified in an independent x86-64 VMware source build and live runtime. FUXA, Node-RED and optional browser dependencies have committed npm lock files. OS packages and upstream build dependencies are not a claim of bit-identical future builds.",
   "upstreams": {
     "FUXA_IMAGE": {
       "source_tag": "frangoteam/fuxa:latest",
@@ -11,7 +11,7 @@
         "arm64",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "NODERED_BASE_IMAGE": {
       "source_tag": "nodered/node-red:latest",
@@ -21,7 +21,7 @@
         "arm64",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "INFLUXDB_IMAGE": {
       "source_tag": "library/influxdb:2.7",
@@ -31,7 +31,7 @@
         "arm64",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "GRAFANA_IMAGE": {
       "source_tag": "grafana/grafana:latest",
@@ -41,7 +41,7 @@
         "arm",
         "arm64"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "MARIADB_IMAGE": {
       "source_tag": "library/mariadb:10.11",
@@ -53,7 +53,7 @@
         "s390x",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "SCADALTS_IMAGE": {
       "source_tag": "scadalts/scadalts:latest",
@@ -63,7 +63,7 @@
         "arm64",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "MOSQUITTO_IMAGE": {
       "source_tag": "library/eclipse-mosquitto:2.0.18",
@@ -76,7 +76,7 @@
         "ppc64le",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "PYTHON_IMAGE": {
       "source_tag": "library/python:3.11-slim",
@@ -91,7 +91,7 @@
         "s390x",
         "unknown"
       ],
-      "status": "registry-resolved; fresh deployment not validated"
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
     },
     "node-red-contrib-modbus": {
       "version": "5.62.1",

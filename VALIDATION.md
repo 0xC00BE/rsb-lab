@@ -1,57 +1,99 @@
 # VMware reference validation
 
-Date: 2026-10-26. Scope: a separate six-VM lab reconstructed from the sanitized
-source and clean OS bases. The original lab machines and network configuration
-were not used as configuration donors. The new workstations are independent full
-clones; the original clean OS templates remained powered off and unchanged.
+Date: 2026-10-26. Scope: the primary reference lab and a second, independently
+created six-VM fleet on the authorized VMware host. The second fleet used repository
+files, fresh private state and clean OS bases. Its firewall base was reset to vendor
+defaults and stripped of prior lab/VPN/operator state before repository bootstrap.
+Original lab machines, source templates and outside networking remained unchanged.
 
 ## Tested combination
 
-- vCenter Server 8.0.3 build 24262322; ESXi 8.0.0 build 20513097.
-- Ubuntu 24.04.5, Docker Engine 29.1.3, Compose 2.40.3+ds1; Docker VM 6 vCPU,
-  12 GiB RAM and 120 GiB virtual disk. These are tested allocations, not minimums.
-- pfSense CE 2.9.0 on a fresh 16 GiB disk with five isolated lab interfaces.
-- Windows Server 2019 Standard Evaluation build 17763 and three Windows 10 Pro
-  build 19045 workstations, with operator-supplied OS bases/licensing.
-- Pinned application references in `lab/upstreams.lock.json`; all custom image
-  builds completed, including locked FUXA drivers and the locked Node-RED tree.
+- vCenter Server 8.0.3 build 24262322; ESXi 8.0.0 build 20513097; x86-64 guests.
+- Ubuntu 24.04 LTS, Docker Engine 29.1.3 and Compose 2.40.3+ds1. Docker guest:
+  6 vCPU, 12 GiB RAM and 120 GiB virtual disk. These are tested allocations.
+- pfSense CE 2.9.0 and native OpenVPN 2.7.5; five isolated lab zones and optional WAN.
+- Windows Server 2019 build 17763 and three Windows 10 Pro build 19045 guests.
+  OS media/bases and licensing are operator supplied.
+- Image references and source commit in `lab/upstreams.lock.json`, with committed
+  FUXA, Node-RED and optional browser npm lock files.
 
-## Results
+## Independent source build
 
-| Check | Result |
-|---|---|
-| Source checks | Passed Python/JSON/YAML parsing, release boundary patterns, Compose references, IP uniqueness, public account consistency, Node-RED wires and documentation links. |
-| Unit checks | 15 passed: six configuration, three scoreboard and six fermentation detector tests. |
-| Image builds | All custom images built. OpenPLC's obsolete live Debian mirror was replaced with signed, dated snapshots. |
-| PLCs | Six source programs compiled and ran. All six returned meaningful Modbus values. Persistent automatic-start settings enabled. |
-| FUXA | Both 14-view projects imported. All six PLC connections and the HMI BACnet connection reported connect-ok with live values. Administrator login worked; anonymous project saves and live-value writes were rejected. |
-| Scada-LTS | Eight sources, 159 points and seven simple views imported. Fresh database creation succeeded. All eight BACnet and nine DNP3 points stored values; pressure scaling and DNP3 analog-output type corrected. Default administrator password replaced and fresh login verified. |
-| Historian | Recent records observed for all six measurements; all eight Grafana panels returned fresh query data. Signed dew-point conversion corrected in the flow. |
-| Engineering channel | Authenticated Node-RED inject reached WS03. A read-only identity/ACL job ran as svc_engagent, without Administrators membership, and was denied access to the engineering handoff. |
-| Windows domain | All three domain joins, intended OU placement and enabled GPOs verified. Each member secure channel passed. All Windows firewall profiles enabled. |
-| Windows services | Inventory service running as a non-administrator; LLMNR/NetBIOS exercise settings verified. Engineering agent running under its separate low-privilege account. Jump/engineering RDP listeners present after reboot. |
-| Network paths | Representative container and workstation positive/negative tests passed. Arbitrary Corporate client blocked from admin applications while designated WS01 could connect. DMZ direct field access blocked. Temporary test address removed. |
-| Host bypass | Explicit attempt to route Node-RED traffic through the multi-network Docker host was rejected; temporary route removed. |
-| DNP3 command/scoring | Select/operate shutdown commands reached the boiler, latched reason 303/evidence bits, and produced the live achievement indicator. Both permissives restored; corrected validation client exited successfully. |
-| Process reset | All three challenge indicators returned to NOT ACHIEVED with live telemetry after reset-process. PLC commands and Windows/domain state are deliberately retained by this reset. |
-| Offline cold startup | Passed after clean shutdown of all six guests. All 21 containers, six PLCs, 17 native protocol points, dashboards, message channel and member secure channels recovered without upstream connectivity. |
-| Coordinated snapshot recovery | Passed: all six powered-off baselines restored together. A post-snapshot test file disappeared. Containers, six PLCs, 17 native points, fresh historian/panel data, engineering channel and Windows domain/services recovered. Inventory service uses delayed automatic startup. |
-| Containment | New isolated virtual switch has no physical uplinks. Docker build adapter and firewall WAN disconnected, including connect-at-power-on settings. Temporary credential ISO detached and removed. Temporary firewall SSH access and its key removed; SSH remained disabled after restore. |
-| Original resources | Repeated inventory audits found existing switches/port groups and outside VM configurations unchanged. |
+The VMware provider created six independent full OS clones, a new folder/resource
+pool and isolated port groups on a switch without uplinks. TLS pinning rejected
+an incorrect certificate. Ownership and repeated inventory audits protected existing
+resources. Guest customization used vCenter and guest operations; no user desktop
+was needed. Legacy Windows Appx repair required the clone's interactive VM session.
+
+All image builds completed from repository files. Six PLC programs compiled,
+started and retained automatic startup. Fresh application state, credentials,
+projects and directory roles were generated without a runtime configuration donor.
+
+- Both FUXA roles imported all 26 views and 47 bundled artwork assets. All **52
+  headless renders** passed: expected images decoded, external HTTP requests were
+  blocked, no page errors or known encoding artifacts occurred. Selected layouts
+  were visually inspected; examples are in the [gallery](docs/gallery.md).
+- Six PLCs and HMI BACnet returned live values. Anonymous project saves/value
+  writes were rejected. Scada-LTS imported eight sources/159 points; all 17 enabled
+  native BACnet/DNP3 points had stored samples.
+- All 21 application containers were running without unhealthy status. Six
+  historian measurement groups and all eight Grafana panels returned recent data.
+  The three status indicators were clean with live telemetry.
+- A new domain and three members passed service, secure-channel and firewall
+  checks. All four Windows identities were distinct. Template auto-login and
+  unused template accounts were disabled; known private bootstrap files were removed.
+- Authenticated Node-RED injection reached the engineering agent. Its result
+  showed the intended non-administrator identity and denied protected handoff access.
+  **The new Jump extension's escalation path was excluded from live testing.**
+  Its installer completed; no escalation payload or escalation proof was run.
+- Declared application paths worked, representative undeclared paths failed,
+  and the explicit Docker-host forwarding bypass was rejected.
+
+## VPN and containment
+
+Fresh administrator and student identities authenticated from WAN using separate
+certificate authorities. The administrator reached management/application paths
+across all five zones. The student reached the intended Corporate services/status
+board while representative firewall and OT management paths were blocked.
+A disposable identity connected before revocation and was rejected afterward.
+Both normal roles passed again after native firewall reboot with setup access removed.
+
+Direct WAN TCP 22/80/443/2222 remained blocked. A live ARP response from the exact
+recorded firewall MAC established that negative checks used a reachable peer;
+the checks completed before disconnecting their test adapter. Temporary firewall
+SSH, its key/rule, private bootstrap media and live copied client keys were removed.
+
+Additional component checks on the primary reference lab verified Corporate LLMNR,
+all eight Corporate/Jump callback paths, rejection of a student identity at the
+administrator listener, all-four-Windows admin RDP/WinRM/SMB paths, and both-role
+forwarding blocks to a controlled upstream endpoint with a positive direct baseline.
+
+## Offline startup and recovery
+
+The independent fleet passed offline cold startup with both upstream adapters
+disconnected. Domain/services, live application values, historian panels and
+network isolation returned. Three harmless post-baseline markers were then created
+on Linux, Jump and firewall; restoring all six powered-off snapshots removed all
+three. Domain secure channels and application health recovered, while native VPN
+configuration/revocation persisted and temporary access remained absent.
+
+The temporary build adapter was made optional so disconnected DHCP does not hold
+up offline startup. A separate Linux reboot verified approximately 9.9 seconds for
+system startup on the tested allocation; application health was checked after
+services settled. The final independent fleet was preserved powered off.
+
+Local source validation and **18 unit tests** passed. All **23 PowerShell sources**
+parsed. GitHub Actions checks source, unit tests, Compose interpolation and Windows
+syntax before publication; the release PR/Actions records the hosted outcome.
 
 ## Practical limits
 
-This validates the stated reference build and representative paths, not every
-possible firewall flow or every assessed attack-chain outcome. Fermentation
-confirmation/boundary/stale-read behavior has unit coverage; a complete live
-Windows privilege-escalation chain and every process-attack variation were not
-certified. Supply a student brief separately because instructor source/solutions
-and training passwords are public.
+This covers the stated VMware reference and representative paths, not every
+possible flow or attack outcome. The new escalation behavior is explicitly
+untested. Proxmox and other platforms are not certified. Initial builds require
+internet access; dependency pins do not promise bit-identical future builds or
+a complete image vulnerability/license audit.
 
-Proxmox and other platforms are not tested. Initial builds require internet
-access; exercises run with upstream adapters disconnected. No claim is made of a
-complete image vulnerability/license audit or bit-identical future upstream builds.
-The GitHub workflow has not run until publication and a successful hosted run.
-
-Private credentials, management addresses, inventory IDs and raw packet captures
-are not part of this report or the public source archive.
+Optional [instructor acceptance](exercises/instructor/acceptance.md) contains
+scenario details. Public source and older releases can reveal solutions. Private
+credentials, management addresses, inventory IDs and raw captures are excluded.

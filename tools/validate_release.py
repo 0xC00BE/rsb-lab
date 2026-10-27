@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Static release checks. Does not contact or change a running lab."""
 import ast
+import hashlib
 import ipaddress
 import json
 import re
@@ -8,6 +9,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from fuxa_project import assemble
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP = {'.git','.local','__pycache__','.venv','node_modules'}
@@ -15,6 +17,23 @@ FORBIDDEN_SUFFIXES = {'.ovpn','.pem','.key','.p12','.pfx','.exe','.dll','.zip','
 
 def check(root=ROOT):
     errors = []
+    gallery = root/'docs/gallery'
+    gallery_images=set()
+    if (gallery/'manifest.json').exists():
+        try:
+            manifest=json.loads((gallery/'manifest.json').read_text())
+            if manifest['schema_version']!=1:raise ValueError('Unsupported screenshot manifest')
+            for item in manifest['images']:
+                name=item['path']
+                if not re.fullmatch(r'[a-z0-9_-]+\.png',name):raise ValueError('Invalid screenshot path')
+                path=gallery/name
+                if path.is_symlink() or path in gallery_images:raise ValueError('Duplicate or linked screenshot')
+                data=path.read_bytes()
+                if not data.startswith(b'\x89PNG\r\n\x1a\n') or len(data)!=item['bytes'] or hashlib.sha256(data).hexdigest()!=item['sha256']:
+                    raise ValueError('Screenshot checksum mismatch: '+name)
+                gallery_images.add(path)
+            if set(gallery.glob('*.png'))!=gallery_images:raise ValueError('Unlisted screenshot')
+        except (OSError,ValueError,KeyError) as error:errors.append('Public gallery: '+str(error))
     files = [p for p in root.rglob('*') if p.is_file() and not (set(p.relative_to(root).parts) & SKIP)]
     for p in files:
         rel = p.relative_to(root).as_posix()
@@ -25,6 +44,11 @@ def check(root=ROOT):
             errors.append('Forbidden release file: '+rel)
         if p.stat().st_size > 10_000_000:
             errors.append('Review oversized release file: '+rel)
+        if p.suffix.lower() == '.png' and (p.parent == root/'projects/fuxa/assets' or p in gallery_images):
+            # This explicit binary allowlist is verified against its asset manifest below.
+            if not p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'):
+                errors.append('Invalid bundled PNG: '+rel)
+            continue
         try:
             text = p.read_text(encoding='utf-8-sig')
         except UnicodeError:
@@ -44,6 +68,10 @@ def check(root=ROOT):
                 ast.parse(text,filename=rel)
         except (ValueError,SyntaxError,yaml.YAMLError) as error:
             errors.append(f'Parse failure: {rel}: {error}')
+    try:
+        assemble(root/'projects/fuxa')
+    except (OSError, ValueError, KeyError) as error:
+        errors.append('FUXA project/assets: '+str(error))
     all_addresses = set()
     for zone in [20,30,40,50]:
         path = root/f'vlan{zone}/compose.yaml'

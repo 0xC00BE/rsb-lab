@@ -10,7 +10,9 @@ demonstrate three bounded process disruptions:
 
 Record each foothold, the service involved and the network boundary crossed.
 The scoreboard is at `http://10.0.30.40:8088`. Obtain access instructions from
-your instructor; no original private VPN is provided with this repository.
+your instructor. For remote participation, use the unique student profile your
+instructor generates with the [optional VPN](../../docs/vpn.md). Private profiles
+are generated per installation and are not included in the public repository.
 
 Scope is limited to the five `10.0.10/20/30/40/50.0/24` lab zones and the
 exercise machines assigned to you. The hypervisor, firewall management and

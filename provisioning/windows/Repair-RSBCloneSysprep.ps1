@@ -7,6 +7,9 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 if (-not $LabClone) { throw 'This operation is only for a disposable release clone. Supply -LabClone after taking a snapshot.' }
+if ([Diagnostics.Process]::GetCurrentProcess().SessionId -eq 0) {
+    throw 'Run this Appx repair in an elevated interactive session of the template user that owns the packages. Guest Operations runs in session 0 and cannot reliably remove those per-user registrations.'
+}
 if ((Get-CimInstance Win32_ComputerSystem).PartOfDomain) { throw 'Repair the base clone before joining a domain.' }
 if (-not (Test-Path -LiteralPath $UnattendPath)) { throw 'A prepared unattended customization file is required.' }
 [xml]$unattend = Get-Content -Raw -LiteralPath $UnattendPath
@@ -26,7 +29,7 @@ for ($attempt=1; $attempt -le $MaximumRepairs; $attempt++) {
     Write-Output "Removing only the reported Appx blocker from this clone: $($package.Name)"
     Remove-AppxPackage -Package $fullName -AllUsers
     $previousErrors = Get-Content -Raw -LiteralPath $errorLog -ErrorAction SilentlyContinue
-    $process = Start-Process -FilePath 'C:\Windows\System32\Sysprep\sysprep.exe' `
+    $process = Start-Process -WindowStyle Hidden -FilePath 'C:\Windows\System32\Sysprep\sysprep.exe' `
         -ArgumentList "/quiet /generalize /oobe /reboot /unattend:$UnattendPath" -Wait -PassThru
     Start-Sleep -Seconds 5
     $currentErrors = Get-Content -Raw -LiteralPath $errorLog -ErrorAction SilentlyContinue

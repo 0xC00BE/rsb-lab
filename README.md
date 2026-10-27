@@ -2,13 +2,14 @@
 
 A segmented industrial cybersecurity training lab: six brewery process cells,
 OpenPLC controllers, Modbus TCP, BACnet/IP, DNP3, FUXA, Scada-LTS, a historian,
-and an optional Windows domain attack path.
+and an optional Windows domain environment.
 
-**v0.1.0-preview.2 — VMware reference build.** The OT services and Windows domain
+**v0.1.0 — verified VMware source release.** The OT services and Windows domain
 have been reconstructed in a separate isolated VMware lab from this source,
 with clean OS bases. See the dated [validation report](VALIDATION.md) for the
-checks completed and remaining limits. Hypervisor provisioning and OS media are
-operator supplied; Proxmox deployment is not yet tested. Read the
+checks completed and remaining limits. The optional VMware adapter creates the
+virtual machines and isolated networks; you supply licensed OS bases.
+Proxmox deployment is not yet tested. Read the
 [release status](docs/release-status.md) before building.
 
 ## What is included
@@ -18,10 +19,14 @@ operator supplied; Proxmox deployment is not yet tested. Read the
 - BACnet chiller and DNP3 boiler implementations and health checks.
 - Native FUXA process views, eight-source/159-point Scada-LTS exports, Grafana dashboard,
   and repaired Node-RED historian flows with an engineering MQTT channel.
-- Windows domain configuration, deliberate training weaknesses, and agent source.
+- Windows domain configuration, role installers, and supporting service source.
 - A platform-neutral [topology](lab/topology.json), explicit
   [firewall policy](provisioning/firewall/policy.json), local lifecycle tools,
   reset guidance, release checks, and a [porting guide](docs/porting-guide.md).
+
+The complete FUXA project includes **26 views and all 47 artwork assets**.
+Browse the [live-render gallery](docs/gallery.md) and the
+[optional administrator/student VPN guide](docs/vpn.md).
 
 No VM disks, Windows media, VPN profiles, private lab credentials, live database
 backups, compiled engineering-agent binaries, or conversation archives are included.
@@ -33,8 +38,10 @@ backups, compiled engineering-agent binaries, or conversation archives are inclu
 | OT core | Dedicated lab firewall and Linux Docker VM; a client with access to the lab networks | Process simulation, dashboards, and protocol exercises |
 | Full lab | OT core plus AD/DNS server, corporate workstation, DMZ jump host, engineering workstation, optional attack VM | Domain and IT/OT pivot exercises |
 
-The current repository does not provision a hypervisor. You create the machines
-and isolated networks, then use the common guest configuration. Start with
+The optional [VMware adapter](infrastructure/vmware/README.md) creates independent
+OS clones and new isolated networks, then stages guest customization. Other
+platforms use the common guest configuration after you create their machines and
+networks. Start with
 [requirements](docs/requirements.md), [installation](docs/installation.md), and
 [networking](docs/networking.md). Windows setup is in [the full lab guide](docs/windows.md).
 The tested VMware layout is described in [the reference build guide](docs/vmware.md).
@@ -58,6 +65,8 @@ python3 tools/lab.py init
 python3 tools/lab.py preflight
 python3 tools/lab.py build
 sudo python3 tools/lab.py prepare-state
+sudo python3 provisioning/linux/host-isolation.py --install-service
+# Disconnect temporary upstream/build connectivity before starting applications.
 python3 tools/lab.py start
 python3 tools/lab.py programs
 # Create temporary management shims, import projects, and configure authentication
@@ -70,12 +79,15 @@ initial image build requires internet access; the exercise runs offline after st
 Do not start this on the original live host: fixed container names and lab
 addresses intentionally identify a separate instance.
 
-## Training credentials and scope
+## Installation and optional exercise material
 
-All accounts in [public-training-accounts.json](lab/public-training-accounts.json)
-are new public examples. Database, broker, and dashboard secrets are generated
-locally by `init` and kept out of Git. Instructor solutions are public in this
-repository; distribute student briefs separately for an assessed exercise.
+Database, broker, VPN and administrator credentials are generated locally and
+kept out of Git. Follow installation without consulting the solution. Start
+exercises with the [student brief](exercises/student/brief.md).
+
+**Optional spoilers:** [Instructor guide, scenario details and account references](exercises/instructor/guide.md).
+Open it only if you want setup internals or solutions. Public source and older
+releases can also reveal those details.
 See [SECURITY.md](SECURITY.md) and [reset instructions](docs/reset.md).
 
 ## Contributing and license

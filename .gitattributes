@@ -6,3 +6,7 @@
 *.ps1 text eol=crlf
 *.cs text eol=crlf
 *.fuxap text eol=lf
+projects/fuxa/assets/* -text
+docs/gallery/*.png -text
+# Preserve the historical one-shot publisher byte for byte.
+.github/workflows/publish-preview.yaml -text
