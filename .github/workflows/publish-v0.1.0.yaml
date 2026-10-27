@@ -1,0 +1,114 @@
+name: Publish validated v0.1.0
+
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-v0.1.0.yaml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-v0.1.0
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == '0xC00BE/rsb-lab' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    env:
+      SOURCE_SHA: 84d6f21b8b961da9a27866c72cb58d2d5f2f8f8d
+      SOURCE_TREE: 148b59dd1663681fcb10160da048951de829f5ef
+      TAG: v0.1.0
+      GH_REPO: 0xC00BE/rsb-lab
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 84d6f21b8b961da9a27866c72cb58d2d5f2f8f8d
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify the audited source and successful hosted validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$SOURCE_TREE"
+          test "$(gh api repos/$GH_REPO/actions/runs/40457154026 --jq .head_sha)" = "$SOURCE_SHA"
+          test "$(gh api repos/$GH_REPO/actions/runs/40457154026 --jq .conclusion)" = success
+          test "$(gh api repos/$GH_REPO/pulls/1 --jq .merged)" = true
+          test "$(gh api repos/$GH_REPO/pulls/1 --jq .head.sha)" = "$SOURCE_SHA"
+          test "$(gh api repos/$GH_REPO/releases --jq '[.[] | select(.tag_name == "v0.1.0" and .draft == false)] | length')" = 0
+      - name: Recheck release source
+        run: |
+          set -euo pipefail
+          python -m pip install -r requirements-dev.txt
+          python tools/validate_release.py
+          python -m unittest discover -s tests -p 'test_*.py'
+          python -m unittest discover -s tools/pentest-status -p 'test_*.py'
+          python -m unittest discover -s vlan50/simulators/fermentation -p 'test_*.py'
+      - name: Package only committed public source
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rsb-release-assets
+          ZIP="/tmp/rsb-release-assets/rsb-lab-$TAG.zip"
+          git archive --format=zip --prefix="rsb-lab-$TAG/" --output="$ZIP" "$SOURCE_SHA"
+          cd /tmp/rsb-release-assets
+          sha256sum "rsb-lab-$TAG.zip" > "rsb-lab-$TAG.zip.sha256"
+          sha256sum -c "rsb-lab-$TAG.zip.sha256"
+          python - <<'PY'
+          import os, zipfile
+          from pathlib import PurePosixPath
+          with zipfile.ZipFile('rsb-lab-' + os.environ['TAG'] + '.zip') as z:
+              assert z.testzip() is None
+              files = [n for n in z.namelist() if not n.endswith('/')]
+              assert len(files) == 215, len(files)
+              for n in files:
+                  p = PurePosixPath(n)
+                  assert not set(p.parts) & {'.git', '.local', '__pycache__'}
+                  assert p.name != '.env'
+                  assert p.suffix.lower() not in {'.iso', '.vmdk', '.ova', '.exe', '.pem', '.key', '.sql'}
+              z.extractall('/tmp/rsb-public-export')
+          print('Verified 215 committed public source files.')
+          PY
+          python /tmp/rsb-public-export/rsb-lab-$TAG/tools/validate_release.py
+      - name: Create draft with both assets, then publish stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ZIP="/tmp/rsb-release-assets/rsb-lab-$TAG.zip"
+          RELEASE_ID=$(gh api repos/$GH_REPO/releases --jq '.[] | select(.tag_name == "v0.1.0") | .id')
+          if test -z "$RELEASE_ID"; then
+            gh release create "$TAG" "$ZIP" "$ZIP.sha256" \
+              --target "$SOURCE_SHA" --title "RSB Brewery ICS Lab $TAG" \
+              --notes-file RELEASE_NOTES.md --draft --latest=false
+            RELEASE_ID=$(gh api repos/$GH_REPO/releases --jq '.[] | select(.tag_name == "v0.1.0") | .id')
+          fi
+          test -n "$RELEASE_ID"
+          export ZIP
+          gh api "repos/$GH_REPO/releases/$RELEASE_ID" > /tmp/rsb-draft.json
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          r = json.loads(Path('/tmp/rsb-draft.json').read_text())
+          assert r['draft'] and not r['prerelease']
+          assert r['tag_name'] == os.environ['TAG']
+          assert r['target_commitish'] == os.environ['SOURCE_SHA']
+          assert r['author']['login'] == 'github-actions[bot]'
+          assets = {a['name']: a for a in r['assets']}
+          z = Path(os.environ['ZIP'])
+          assert set(assets) == {z.name, z.name + '.sha256'}
+          for p in [z, Path(str(z) + '.sha256')]:
+              assert assets[p.name]['state'] == 'uploaded'
+              assert assets[p.name]['digest'] == 'sha256:' + hashlib.sha256(p.read_bytes()).hexdigest()
+          print('Draft identity, source revision and both uploaded asset digests verified.')
+          PY
+          gh api --method PATCH "repos/$GH_REPO/releases/$RELEASE_ID" -F draft=false -F prerelease=false -f make_latest=true --jq '{url: .html_url, draft: .draft, prerelease: .prerelease}'
