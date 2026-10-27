@@ -1,31 +1,36 @@
-# Fresh deployment acceptance
+# Installation acceptance
 
-The reference results are in [VALIDATION.md](../VALIDATION.md). For another build, record platform, date,
-OS builds, image digests, operator, commands/results and any deviations in your
-own report. Do not include `.env`, credentials, private keys or packet captures
-containing unrelated traffic in a public report.
+Record platform, date, OS builds, image references and deviations in a private
+operator report. Keep credentials, keys and raw captures out of public reports.
 
 | Area | Required evidence |
 |---|---|
-| Build | All custom images build from this tree; OpenPLC full commit matches the lock. |
-| Startup | All containers start after a clean host reboot; protocol health checks settle healthy. |
-| PLCs | All six ST programs compile and report Running; all six return meaningful Modbus values. |
-| HMI | FUXA imports, correct tag scaling and changing readings; Scada-LTS imports eight sources/159 points. |
-| Historian | Fresh records for six cells in InfluxDB; Grafana panels update. |
-| BACnet | Directed unicast read works from HMI/engineering; DMZ cannot reach it. |
-| DNP3 | All nine native boiler points update from Scada-LTS; engineering can connect and DMZ cannot. |
-| Corporate isolation | Arbitrary Corporate host cannot reach Node-RED, HMI or Scada-LTS directly; designated WS01 can. |
-| Scoreboard | Corporate client can view .30.40:8088; board returns fresh readings and distinguishes stale/unavailable data. |
-| Negative routes | Node-RED cannot initiate connections to Corporate; direct student-to-field traffic is blocked; no host-routing or IPv6 bypass. |
-| Firewall | No inherited floating/group/NAT/WAN rule bypasses policy; negative tests run after clearing stale states. |
-| AD, full scope | DC DNS works; workstation domain logins and intended OU memberships/GPOs apply. |
-| Initial foothold | Inventory service runs as non-admin; missing name remains unresolved; intended isolated name-resolution exercise works. |
-| MQTT pivot | Authenticated Node-RED job reaches agent; result shows low-privilege service context. |
-| Engineering | WS03 reaches WS02 on permitted services; restricted handoff is unreadable to the low-privilege agent. |
-| FUXA access | Anonymous viewer can view SCADA but cannot save projects or write live values. |
-| Recovery | Process reset is documented accurately; coordinated snapshot restore returns the full exercise to its baseline. |
-| Containment | No lab service is exposed on upstream/WAN or reachable from an unrelated physical LAN. |
+| Build | All images build from the supplied source and lock manifest. |
+| Startup | Every service returns after a clean reboot. |
+| PLCs | Six programs compile, start automatically and provide changing values. |
+| Visual project | All 26 FUXA views load with images, navigation and live values on both roles. |
+| SCADA | Eight sources and 159 points import; required points update. |
+| Historian | Six measurement groups and all eight Grafana panels have fresh data. |
+| Domain | AD/DNS ready; three members join, receive policy and pass secure-channel checks. |
+| Windows roles | Each installer completes; configured services start after reboot. |
+| Network policy | Declared paths work; undeclared paths and host-routing bypasses fail. |
+| Viewer permissions | Viewing works; unauthenticated configuration changes fail. |
+| Optional VPN | Both roles connect from WAN; admin management works; student management and upstream access fail; revocation works. |
+| Recovery | Documented process restart and coordinated six-VM recovery return the baseline. |
+| Containment | WAN exposes only configured VPN listeners, without direct application access. |
 
-`python3 tools/lab.py check` is a useful read-only subset, not a substitute for
-this table. Complete a fresh installation on a second machine before promoting
-the preview to a stable release.
+Useful read-only Docker guest checks, with temporary management shims:
+
+```bash
+python3 tools/lab.py check
+python3 tools/validate/live_fuxa.py
+sudo python3 tools/validate/historian.py
+```
+
+On Windows use `Test-ComputerSecureChannel`, inspect role services and verify
+firewall profiles after domain policy settles. Allow delayed automatic services
+to start before declaring a failed installation.
+
+The historical report is [VALIDATION.md](../VALIDATION.md). The finished release
+requires a new dated report covering the added visual assets and VPN. Optional
+[instructor checks](../exercises/instructor/acceptance.md) contain spoilers.

@@ -14,6 +14,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 from lab import ROOT, check_configuration
+from fuxa_project import assemble
 
 
 def api(base, path, data=None, token=None):
@@ -30,7 +31,7 @@ def api(base, path, data=None, token=None):
 
 def main():
     state = Path(check_configuration()['LAB_DATA_DIR'])
-    source = json.loads((ROOT / 'projects/fuxa/process.fuxap').read_text())
+    source = assemble()
     for role, address, container in [
         ('fuxa-hmi', '10.0.40.10', 'ics-fuxa-hmi'),
         ('fuxa-scada', '10.0.30.10', 'ics-fuxa-scada')]:

@@ -21,7 +21,9 @@ foreach ($map as $vlan => $interface) {
 }
 $rules = [];
 foreach (($config['filter']['rule'] ?? []) as $rule) {
-    if (!in_array($rule['interface'] ?? '', array_values($map), true)) {
+    // Keep the optional role adapter intact when refreshing the base policy.
+    if (str_starts_with($rule['descr'] ?? '', 'RSB VPN - ') ||
+        !in_array($rule['interface'] ?? '', array_values($map), true)) {
         $rules[] = $rule;
     }
 }
@@ -48,7 +50,9 @@ if (!in_array('--apply', $argv, true)) {
     exit(0);
 }
 $backup = '/conf/backup/config-rsb-public-before-' . date('Ymd-His') . '.xml';
+if (!is_dir('/conf/backup') && !mkdir('/conf/backup',0700,true)) throw new Exception('Could not create private backup directory');
 if (!copy('/conf/config.xml', $backup)) throw new Exception('Could not save pre-change configuration');
+chmod($backup,0600);
 $config['filter']['rule'] = $rules;
 write_config('Apply RSB public lab policy');
 filter_configure();

@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 192" role="img" aria-label="SCADA stencil" shape-rendering="geometricPrecision">
+  <g stroke="#263746" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><rect fill="#78909c" x="49" y="40" width="158" height="111" rx="10"/><path fill="#39a9db" d="M70 81 H186 V112 H70Z"/><circle fill="#d9e7ec" cx="88" cy="65" r="10"/><circle fill="#d9e7ec" cx="128" cy="65" r="10"/><circle fill="#d9e7ec" cx="168" cy="65" r="10"/><path fill="none" d="M88 112 V137 M128 112 V137 M168 112 V137"/></g>
+</svg>

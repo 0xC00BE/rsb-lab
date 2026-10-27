@@ -22,8 +22,8 @@ isolated instance. See [validation](../VALIDATION.md) for tested scope and limit
    Disconnect temporary upstream/build connectivity after all images are built.
    Run `python3 tools/lab.py start`. Wait for the PLC web interfaces and MariaDB
    to initialize. Run `python3 tools/lab.py programs` to upload, compile, and start
-   all six ST programs. This assumes fresh OpenPLC's default `openplc/openplc`
-   login and intentionally fails if authentication or compilation fails. It also
+   all six ST programs. This uses the fresh OpenPLC image's initial login and
+   fails if authentication or compilation fails. It also
    enables persistent automatic PLC startup after a reboot.
 7. Configure applications and import projects below. Verify expected connections,
    live values and firewall paths. Run `python3 tools/lab.py check` for a read-only
@@ -36,10 +36,10 @@ Use a management client or engineering workstation with the required lab access.
 
 | Application | Endpoint | Initialization |
 |---|---|---|
-| Node-RED | http://10.0.20.20:1880 | User `svc.nodered`; public password in training accounts JSON. Seeded flows write to InfluxDB and expose an engineering MQTT channel. |
+| Node-RED | http://10.0.20.20:1880 | Seeded by prepare-state. Administrative access is described in optional instructor material. |
 | MQTT | 10.0.20.21:1883 | User `rsb_broker`; locally generated `MQTT_PASSWORD` in `.env`. |
 | InfluxDB | http://10.0.30.20:8086 | User `admin`; local `INFLUXDB_PASSWORD`; org/bucket `brewery`. Initializer runs only on empty data. |
-| Grafana | http://10.0.30.30:3000 | User `admin`; local `GRAFANA_PASSWORD`. Dashboard and datasource are provisioned; anonymous viewing is intentional. |
+| Grafana | http://10.0.30.30:3000 | User `admin`; local `GRAFANA_PASSWORD`. Dashboard, datasource and viewer access are provisioned. |
 | FUXA SCADA | http://10.0.30.10:1881 | The image includes locked Modbus/BACnet drivers. The initializer imports the project and disables BACnet on this instance. |
 | FUXA HMI | http://10.0.40.10:1881 | The initializer imports the project, including BACnet, and configures editor authentication. |
 | Scada-LTS | http://10.0.40.20:8080/Scada-LTS/ | The initializer imports six Modbus sources plus native BACnet/DNP3 sources, then replaces the fresh `admin/admin` password. |
@@ -63,9 +63,10 @@ FUXA anonymous viewers can read values; project saves and live value writes requ
 an administrator. SCADA's FUXA BACnet device is disabled because its binding
 belongs to the engineering HMI (.40.10:47809).
 
-The FUXA export is the smaller, earlier process-view project. The later 62 MB
-factory artwork project is deliberately excluded pending a separate embedded-asset
-review. It is not required for PLC operation. The Scada-LTS exports contain six
+The default FUXA project includes all 26 views, the brewery logo and equipment
+artwork. The initializer assembles verified bundled images; no external asset
+download is needed. See the [visual project](../projects/fuxa/README.md) for a
+manual export. The Scada-LTS exports contain six
 Modbus sources/142 points plus two native protocol sources/17 points. The BACnet
 point network address is empty for direct IP communication; a literal `0` would
 request routed BACnet addressing. DNP3 pressure inputs use raw/10 scaling, and

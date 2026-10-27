@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "ubuntu_server": {
+    "release": "24.04",
+    "build": "20261017",
+    "architecture": "amd64",
+    "filename": "noble-server-cloudimg-amd64.ova",
+    "url": "https://cloud-images.ubuntu.com/noble/20261017/noble-server-cloudimg-amd64.ova",
+    "checksums_url": "https://cloud-images.ubuntu.com/noble/20261017/SHA256SUMS",
+    "sha256": "ce599f89777c6eaa1a3156698f004b7938dcc16680132d5f10da1269770e74a2",
+    "bytes": 590766080
+  },
+  "operator_supplied": [
+    "pfSense CE 2.9.x installation or clean OS template",
+    "Licensed Windows Server 2019 OS base",
+    "Licensed Windows 10 Pro OS base"
+  ]
+}

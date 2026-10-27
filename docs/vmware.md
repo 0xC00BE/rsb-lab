@@ -23,12 +23,15 @@ The Docker guest has four OT adapters and an optional temporary build adapter.
 Give the OT adapters stable names or record them in `.env`. Do not assign the
 host ordinary IP addresses on those adapters; containers own their zone addresses.
 Only the new Docker-facing port groups should receive the MAC/promiscuous-mode
-permissions required by macvlan. Do not relax unrelated port groups.
+permissions required by macvlan. For the student VPN, also enable those
+permissions on the new Corporate port group for bridged client MAC addresses.
+Do not relax unrelated port groups.
 
 Install all packages and build/pull the images while temporary build connectivity
 is available. Install the host forwarding guard. Disconnect both the build
-adapter and firewall WAN, including their connect-at-power-on settings, before
-running the exercise. VMware guest operations remain usable without an IP route
+adapter, including its connect-at-power-on setting, before running the exercise.
+Keep firewall WAN disconnected for offline operation, or enable only the
+[optional VPN](vpn.md) for remote participants. VMware guest operations remain usable without an IP route
 from the preparation machine into the lab.
 
 ## Windows bases
@@ -44,6 +47,9 @@ After a clone-only snapshot, the supplied
 `provisioning/windows/Repair-RSBCloneSysprep.ps1 -LabClone` removes only the
 specific package identified by the current Sysprep error log. It requires a
 prepared unattended file targeting one of the three RSB workstation names.
+Run this repair in an elevated interactive session of the template user that
+owns the Store packages. A background Guest Operations session can fail with
+`0x80073D19` because those per-user registrations are not loaded there.
 It refuses domain members and does not modify the source template. Verify the
 resulting hostname, address and unique Windows identity after the reboot.
 
