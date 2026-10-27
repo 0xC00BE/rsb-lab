@@ -1,0 +1,76 @@
+networks:
+  vlan40:
+    driver: macvlan
+    driver_opts:
+      parent: ${VLAN40_PARENT:?Set the Linux network interface}
+    ipam:
+      config:
+      - subnet: 10.0.40.0/24
+        gateway: 10.0.40.1
+  scadalts-internal:
+    driver: bridge
+    internal: true
+services:
+  fuxa-hmi:
+    image: rsb-fuxa:source-v0.1.0
+    build:
+      context: ../images/fuxa
+      args:
+        FUXA_BASE_IMAGE: ${FUXA_IMAGE:?Set a pinned image reference}
+    container_name: ics-fuxa-hmi
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-hmi/appdata:/usr/src/app/FUXA/server/_appdata
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-hmi/db:/usr/src/app/FUXA/server/_db
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-hmi/logs:/usr/src/app/FUXA/server/_logs
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/fuxa-hmi/images:/usr/src/app/FUXA/server/_images
+    networks:
+      vlan40:
+        ipv4_address: 10.0.40.10
+  mariadb:
+    image: ${MARIADB_IMAGE:?Set a pinned image reference}
+    container_name: ics-mariadb
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Run init}
+      MYSQL_DATABASE: scadalts
+      MYSQL_USER: scadalts
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Run init}
+    volumes:
+    - ${LAB_DATA_DIR:?Set an absolute state directory}/mariadb/data:/var/lib/mysql
+    networks:
+      scadalts-internal: null
+    healthcheck:
+      test:
+      - CMD
+      - healthcheck.sh
+      - --connect
+      - --innodb_initialized
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  scada-lts:
+    image: ${SCADALTS_IMAGE:?Set a pinned image reference}
+    container_name: ics-scadalts
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Europe/Oslo}
+      DB_TYPE: mysql
+      DB_HOST: mariadb
+      DB_PORT: '3306'
+      DB_NAME: scadalts
+      DB_USERNAME: scadalts
+      DB_PASSWORD: ${MYSQL_PASSWORD:?Run init}
+    volumes:
+    - ${LAB_DATA_DIR}/scadalts/logs:/usr/local/tomcat/logs
+    - ${LAB_DATA_DIR}/scadalts/context/context.xml:/usr/local/tomcat/webapps/Scada-LTS/META-INF/context.xml:ro
+    networks:
+      vlan40:
+        ipv4_address: 10.0.40.20
+      scadalts-internal: null
+    depends_on:
+      mariadb:
+        condition: service_healthy

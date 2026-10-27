@@ -1,0 +1,97 @@
+{
+  "notice": "NEW public examples, not credentials for the original private lab. Never reuse elsewhere.",
+  "accounts": [
+    {
+      "account": "sara.nilsen",
+      "password": "PublicLab!User01"
+    },
+    {
+      "account": "henrik.solberg",
+      "password": "PublicLab!User02"
+    },
+    {
+      "account": "anna.lund",
+      "password": "PublicLab!User03"
+    },
+    {
+      "account": "marius.berg",
+      "password": "PublicLab!User04"
+    },
+    {
+      "account": "ingrid.haugen",
+      "password": "PublicLab!User05"
+    },
+    {
+      "account": "erik.dahl",
+      "password": "PublicLab!User06"
+    },
+    {
+      "account": "lina.moen",
+      "password": "PublicLab!User07"
+    },
+    {
+      "account": "thea.johansen",
+      "password": "PublicLab!User08"
+    },
+    {
+      "account": "anders.lie",
+      "password": "PublicLab!User09"
+    },
+    {
+      "account": "sofie.bakke",
+      "password": "PublicLab!User10"
+    },
+    {
+      "account": "jonas.sveen",
+      "password": "PublicLab!User11"
+    },
+    {
+      "account": "nora.kristiansen",
+      "password": "PublicLab!User12"
+    },
+    {
+      "account": "martin.iversen",
+      "password": "PublicLab!User13"
+    },
+    {
+      "account": "camilla.aasen",
+      "password": "PublicLab!User14"
+    },
+    {
+      "account": "victor.nordby",
+      "password": "PublicLab!User15"
+    },
+    {
+      "account": "kari.holm",
+      "password": "PublicLab!User16"
+    },
+    {
+      "account": "legacy.vendor",
+      "password": "PublicLab!User17"
+    },
+    {
+      "account": "svc.nodered",
+      "password": "PublicLab!App01"
+    },
+    {
+      "account": "svc.scadahist",
+      "password": "PublicLab!App02"
+    },
+    {
+      "account": "svc.backup",
+      "password": "PublicLab!App03"
+    },
+    {
+      "account": "svc.erp",
+      "password": "PublicLab!App04"
+    },
+    {
+      "account": "svc.bms",
+      "password": "PublicLab!App05"
+    },
+    {
+      "account": "svc.packaging",
+      "password": "PublicLab!App06"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "source": "Current Dashboard-P1 through P4; eight anonymous browser renders verified across both release roles on 2026-10-27",
+  "images": [
+    {
+      "path": "dashboard-p1.png",
+      "sha256": "d86fe053cff07353e0c5dcf9ca8b4338b0c603ca1f0dfdfeedc11bed160ec5e6",
+      "bytes": 176567
+    },
+    {
+      "path": "dashboard-p2.png",
+      "sha256": "96e52dcc49c2b8d4b3494db0bfc09a86e64135c7b803a2c03651606bca19a3ac",
+      "bytes": 158185
+    },
+    {
+      "path": "dashboard-p3.png",
+      "sha256": "71b48a0ab70be0844dc967cc8bc45c449696e825b861ae16fbf7d2dd28d3d37e",
+      "bytes": 591096
+    },
+    {
+      "path": "dashboard-p4.png",
+      "sha256": "b81fe4da99dff172f583086de8a96a244e8307be6a98bf3c6bb3238de036c6b9",
+      "bytes": 959516
+    }
+  ]
+}

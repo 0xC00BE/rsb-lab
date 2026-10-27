@@ -1,0 +1,8 @@
+{
+  "name": "rsb-visual-acceptance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Optional headless verification of the bundled FUXA visual project",
+  "engines": {"node": ">=20"},
+  "dependencies": {"playwright": "1.64.1"}
+}

@@ -1,0 +1,580 @@
+[
+  {
+    "id": "tab-rawmat",
+    "type": "tab",
+    "label": "Raw Materials PLC",
+    "disabled": false
+  },
+  {
+    "id": "tab-brewhouse",
+    "type": "tab",
+    "label": "Brewhouse PLC",
+    "disabled": false
+  },
+  {
+    "id": "tab-ferment",
+    "type": "tab",
+    "label": "Fermentation PLC",
+    "disabled": false
+  },
+  {
+    "id": "tab-condition",
+    "type": "tab",
+    "label": "Conditioning PLC",
+    "disabled": false
+  },
+  {
+    "id": "tab-packaging",
+    "type": "tab",
+    "label": "Packaging PLC",
+    "disabled": false
+  },
+  {
+    "id": "tab-utilities",
+    "type": "tab",
+    "label": "Utilities PLC",
+    "disabled": false
+  },
+  {
+    "id": "modbus-rawmat",
+    "type": "modbus-client",
+    "name": "PLC Raw Materials",
+    "clienttype": "tcp",
+    "bufferCommands": true,
+    "stateLogEnabled": false,
+    "tcpHost": "10.0.50.101",
+    "tcpPort": "502",
+    "tcpType": "DEFAULT",
+    "unit_id": "1"
+  },
+  {
+    "id": "modbus-brewhouse",
+    "type": "modbus-client",
+    "name": "PLC Brewhouse",
+    "clienttype": "tcp",
+    "bufferCommands": true,
+    "stateLogEnabled": false,
+    "tcpHost": "10.0.50.102",
+    "tcpPort": "502",
+    "tcpType": "DEFAULT",
+    "unit_id": "1"
+  },
+  {
+    "id": "modbus-ferment",
+    "type": "modbus-client",
+    "name": "PLC Fermentation",
+    "clienttype": "tcp",
+    "bufferCommands": true,
+    "stateLogEnabled": false,
+    "tcpHost": "10.0.50.103",
+    "tcpPort": "502",
+    "tcpType": "DEFAULT",
+    "unit_id": "1"
+  },
+  {
+    "id": "modbus-condition",
+    "type": "modbus-client",
+    "name": "PLC Conditioning",
+    "clienttype": "tcp",
+    "bufferCommands": true,
+    "stateLogEnabled": false,
+    "tcpHost": "10.0.50.104",
+    "tcpPort": "502",
+    "tcpType": "DEFAULT",
+    "unit_id": "1"
+  },
+  {
+    "id": "modbus-packaging",
+    "type": "modbus-client",
+    "name": "PLC Packaging",
+    "clienttype": "tcp",
+    "bufferCommands": true,
+    "stateLogEnabled": false,
+    "tcpHost": "10.0.50.105",
+    "tcpPort": "502",
+    "tcpType": "DEFAULT",
+    "unit_id": "1"
+  },
+  {
+    "id": "modbus-utilities",
+    "type": "modbus-client",
+    "name": "PLC Utilities",
+    "clienttype": "tcp",
+    "bufferCommands": true,
+    "stateLogEnabled": false,
+    "tcpHost": "10.0.50.106",
+    "tcpPort": "502",
+    "tcpType": "DEFAULT",
+    "unit_id": "1"
+  },
+  {
+    "id": "influx-out",
+    "type": "influxdb",
+    "hostname": "10.0.30.20",
+    "port": "8086",
+    "protocol": "http",
+    "database": "brewery",
+    "name": "InfluxDB OT Historian",
+    "usetls": false,
+    "tls": "",
+    "influxdbVersion": "2.0",
+    "url": "http://10.0.30.20:8086",
+    "org": "brewery",
+    "bucket": "brewery",
+    "timeout": 10,
+    "rejectUnauthorized": false
+  },
+  {
+    "id": "poll-rawmat",
+    "type": "inject",
+    "z": "tab-rawmat",
+    "name": "Poll every 5s",
+    "repeat": "5",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "2",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 100,
+    "y": 80,
+    "wires": [
+      [
+        "read-rawmat"
+      ]
+    ]
+  },
+  {
+    "id": "read-rawmat",
+    "type": "modbus-read",
+    "z": "tab-rawmat",
+    "name": "Read registers 40001-40009",
+    "topic": "rawmat",
+    "showStatusActivities": false,
+    "logIOActivities": false,
+    "showErrors": false,
+    "unitid": "1",
+    "dataType": "HoldingRegister",
+    "adr": "0",
+    "quantity": "9",
+    "rate": "5",
+    "rateUnit": "s",
+    "delayOnStart": false,
+    "startDelayTime": "",
+    "server": "modbus-rawmat",
+    "useIOFile": false,
+    "ioFile": "",
+    "useIOForPayload": false,
+    "emptyMsgOnFail": false,
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "map-rawmat"
+      ]
+    ]
+  },
+  {
+    "id": "map-rawmat",
+    "type": "function",
+    "z": "tab-rawmat",
+    "name": "Map to tags",
+    "func": "const r = msg.payload;\nreturn [{\n  measurement: 'raw_materials',\n  payload: {\n        LT101_silo1_kg:    r[0],\n        LT102_silo2_kg:    r[1],\n        ST101_mill_rpm:    r[2],\n        ZT101_auger_A:     r[3],\n        TT201_hlt_temp:    r[4] / 10.0,\n        LT201_hlt_level:   r[5],\n        FT201_hlt_flow:    r[6],\n        TT202_clt_temp:    r[7] / 10.0,\n        LT202_clt_level:   r[8]\n      }\n}];",
+    "outputs": 1,
+    "x": 540,
+    "y": 80,
+    "wires": [
+      [
+        "write-rawmat"
+      ]
+    ]
+  },
+  {
+    "id": "write-rawmat",
+    "type": "influxdb out",
+    "z": "tab-rawmat",
+    "influxdb": "influx-out",
+    "name": "Write to InfluxDB",
+    "measurement": "",
+    "precision": "",
+    "retentionPolicy": "",
+    "x": 760,
+    "y": 80,
+    "wires": [
+      []
+    ],
+    "org": "brewery",
+    "bucket": "brewery",
+    "precisionV18FluxV20": "ms"
+  },
+  {
+    "id": "read-brewhouse",
+    "type": "modbus-read",
+    "z": "tab-brewhouse",
+    "name": "Read registers 40101-40110",
+    "topic": "brewhouse",
+    "showStatusActivities": false,
+    "logIOActivities": false,
+    "showErrors": false,
+    "unitid": "1",
+    "dataType": "HoldingRegister",
+    "adr": "100",
+    "quantity": "10",
+    "rate": "5",
+    "rateUnit": "s",
+    "delayOnStart": false,
+    "startDelayTime": "",
+    "server": "modbus-brewhouse",
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "map-brewhouse"
+      ]
+    ]
+  },
+  {
+    "id": "map-brewhouse",
+    "type": "function",
+    "z": "tab-brewhouse",
+    "name": "Map to tags",
+    "func": "const r = msg.payload;\nreturn [{\n  measurement: 'brewhouse',\n  payload: {\n        TT301_mash_temp:      r[0] / 10.0,\n        LT301_mash_level:     r[1],\n        AT301_mash_ph:        r[2] / 100.0,\n        AT302_lauter_turb:    r[3],\n        LT302_lauter_level:   r[4],\n        TT303_kettle_temp:    r[5] / 10.0,\n        LT303_kettle_level:   r[6],\n        PT301_kettle_press:   r[7],\n        TT304_whirlpool_temp: r[8] / 10.0,\n        TT306_chiller_out:    r[9] / 10.0\n      }\n}];",
+    "outputs": 1,
+    "x": 540,
+    "y": 80,
+    "wires": [
+      [
+        "write-brewhouse"
+      ]
+    ]
+  },
+  {
+    "id": "write-brewhouse",
+    "type": "influxdb out",
+    "z": "tab-brewhouse",
+    "influxdb": "influx-out",
+    "name": "Write to InfluxDB",
+    "x": 760,
+    "y": 80,
+    "wires": [
+      []
+    ],
+    "org": "brewery",
+    "bucket": "brewery",
+    "precisionV18FluxV20": "ms"
+  },
+  {
+    "id": "read-ferment",
+    "type": "modbus-read",
+    "z": "tab-ferment",
+    "name": "Read registers 40401-40406",
+    "topic": "fermentation",
+    "showStatusActivities": false,
+    "logIOActivities": false,
+    "showErrors": false,
+    "unitid": "1",
+    "dataType": "HoldingRegister",
+    "adr": "400",
+    "quantity": "24",
+    "rate": "5",
+    "rateUnit": "s",
+    "delayOnStart": false,
+    "startDelayTime": "",
+    "server": "modbus-ferment",
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "map-ferment"
+      ]
+    ]
+  },
+  {
+    "id": "map-ferment",
+    "type": "function",
+    "z": "tab-ferment",
+    "name": "Map to tags",
+    "func": "const r = msg.payload;\nreturn [{\n  measurement: 'fermentation',\n  payload: {\n        TT401_fv1_temp:   r[0]  / 10.0,\n        PT401_fv1_press:  r[1],\n        LT401_fv1_level:  r[2],\n        AT401_fv1_ph:     r[3]  / 100.0,\n        TT402_fv2_temp:   r[10] / 10.0,\n        PT402_fv2_press:  r[11],\n        LT402_fv2_level:  r[12],\n        AT402_fv2_ph:     r[13] / 100.0,\n        TT403_fv3_temp:   r[20] / 10.0,\n        PT403_fv3_press:  r[21],\n        PT405_co2_header: r[4],\n        FT401_co2_flow:   r[5]\n      }\n}];",
+    "outputs": 1,
+    "x": 540,
+    "y": 80,
+    "wires": [
+      [
+        "write-ferment"
+      ]
+    ]
+  },
+  {
+    "id": "write-ferment",
+    "type": "influxdb out",
+    "z": "tab-ferment",
+    "influxdb": "influx-out",
+    "name": "Write to InfluxDB",
+    "x": 760,
+    "y": 80,
+    "wires": [
+      []
+    ],
+    "org": "brewery",
+    "bucket": "brewery",
+    "precisionV18FluxV20": "ms"
+  },
+  {
+    "id": "read-condition",
+    "type": "modbus-read",
+    "z": "tab-condition",
+    "name": "Read registers 40501-40516",
+    "topic": "conditioning",
+    "showStatusActivities": false,
+    "logIOActivities": false,
+    "showErrors": false,
+    "unitid": "1",
+    "dataType": "HoldingRegister",
+    "adr": "500",
+    "quantity": "16",
+    "rate": "5",
+    "rateUnit": "s",
+    "delayOnStart": false,
+    "startDelayTime": "",
+    "server": "modbus-condition",
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "map-condition"
+      ]
+    ]
+  },
+  {
+    "id": "map-condition",
+    "type": "function",
+    "z": "tab-condition",
+    "name": "Map to tags",
+    "func": "const r = msg.payload;\nreturn [{\n  measurement: 'conditioning',\n  payload: {\n        TT501_bbt1_temp:   r[0]  / 10.0,\n        PT501_bbt1_press:  r[1],\n        LT501_bbt1_level:  r[2],\n        AT501_bbt1_turb:   r[3],\n        TT502_bbt2_temp:   r[10] / 10.0,\n        PT502_bbt2_press:  r[11],\n        LT502_bbt2_level:  r[12],\n        AT502_bbt2_turb:   r[13]\n      }\n}];",
+    "outputs": 1,
+    "x": 540,
+    "y": 80,
+    "wires": [
+      [
+        "write-condition"
+      ]
+    ]
+  },
+  {
+    "id": "write-condition",
+    "type": "influxdb out",
+    "z": "tab-condition",
+    "influxdb": "influx-out",
+    "name": "Write to InfluxDB",
+    "x": 760,
+    "y": 80,
+    "wires": [
+      []
+    ],
+    "org": "brewery",
+    "bucket": "brewery",
+    "precisionV18FluxV20": "ms"
+  },
+  {
+    "id": "read-packaging",
+    "type": "modbus-read",
+    "z": "tab-packaging",
+    "name": "Read packaging registers",
+    "topic": "packaging",
+    "showStatusActivities": false,
+    "logIOActivities": false,
+    "showErrors": false,
+    "unitid": "1",
+    "dataType": "HoldingRegister",
+    "adr": "600",
+    "quantity": "10",
+    "rate": "5",
+    "rateUnit": "s",
+    "delayOnStart": false,
+    "startDelayTime": "",
+    "server": "modbus-packaging",
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "map-packaging"
+      ]
+    ]
+  },
+  {
+    "id": "map-packaging",
+    "type": "function",
+    "z": "tab-packaging",
+    "name": "Map to tags",
+    "func": "const r = msg.payload;\nreturn [{\n  measurement: 'packaging',\n  payload: {\n        PT601_filter_dp:    r[0],\n        FT601_flow:         r[1],\n        LT601_fill_level:   r[2],\n        CT601_bottle_count: r[3],\n        TQ601_cap_torque:   r[4],\n        CT602_case_count:   r[5]\n      }\n}];",
+    "outputs": 1,
+    "x": 540,
+    "y": 80,
+    "wires": [
+      [
+        "write-packaging"
+      ]
+    ]
+  },
+  {
+    "id": "write-packaging",
+    "type": "influxdb out",
+    "z": "tab-packaging",
+    "influxdb": "influx-out",
+    "name": "Write to InfluxDB",
+    "x": 760,
+    "y": 80,
+    "wires": [
+      []
+    ],
+    "org": "brewery",
+    "bucket": "brewery",
+    "precisionV18FluxV20": "ms"
+  },
+  {
+    "id": "read-utilities",
+    "type": "modbus-read",
+    "z": "tab-utilities",
+    "name": "Read utilities registers",
+    "topic": "utilities",
+    "showStatusActivities": false,
+    "logIOActivities": false,
+    "showErrors": false,
+    "unitid": "1",
+    "dataType": "HoldingRegister",
+    "adr": "700",
+    "quantity": "6",
+    "rate": "5",
+    "rateUnit": "s",
+    "delayOnStart": false,
+    "startDelayTime": "",
+    "server": "modbus-utilities",
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "map-utilities"
+      ]
+    ]
+  },
+  {
+    "id": "map-utilities",
+    "type": "function",
+    "z": "tab-utilities",
+    "name": "Map to tags",
+    "func": "const r = msg.payload;\nreturn [{\n  measurement: 'utilities',\n  payload: {\n        PT711_air_press:   r[0],\n        AT711_dew_point:   (r[1] > 32767 ? r[1] - 65536 : r[1]) / 10.0,\n        PT721_co2_press:   r[2],\n        LT721_co2_level:   r[3],\n        AT731_conductivity: r[4],\n        XT731_uv_status:   r[5]\n      }\n}];",
+    "outputs": 1,
+    "x": 540,
+    "y": 80,
+    "wires": [
+      [
+        "write-utilities"
+      ]
+    ]
+  },
+  {
+    "id": "write-utilities",
+    "type": "influxdb out",
+    "z": "tab-utilities",
+    "influxdb": "influx-out",
+    "name": "Write to InfluxDB",
+    "x": 760,
+    "y": 80,
+    "wires": [
+      []
+    ],
+    "org": "brewery",
+    "bucket": "brewery",
+    "precisionV18FluxV20": "ms"
+  },
+  {
+    "id": "mqtt-tab",
+    "type": "tab",
+    "label": "DMZ Engineering Sync"
+  },
+  {
+    "id": "rsb-mqtt-config",
+    "type": "mqtt-broker",
+    "name": "RSB MQTT",
+    "broker": "10.0.20.21",
+    "port": "1883",
+    "clientid": "rsb-nodered",
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "autoConnect": true
+  },
+  {
+    "id": "mqtt-job",
+    "type": "inject",
+    "z": "mqtt-tab",
+    "name": "Engineering status",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "once": false,
+    "payload": "{\"job\":\"shift_report\"}",
+    "payloadType": "json",
+    "topic": "rsb/eng/ws03/cmd",
+    "x": 170,
+    "y": 100,
+    "wires": [
+      [
+        "mqtt-command"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt-command",
+    "type": "mqtt out",
+    "z": "mqtt-tab",
+    "name": "Send job",
+    "topic": "rsb/eng/ws03/cmd",
+    "qos": "0",
+    "retain": "false",
+    "broker": "rsb-mqtt-config",
+    "x": 420,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "mqtt-result",
+    "type": "mqtt in",
+    "z": "mqtt-tab",
+    "name": "Engineering results",
+    "topic": "rsb/eng/ws03/#",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "rsb-mqtt-config",
+    "x": 170,
+    "y": 180,
+    "wires": [
+      [
+        "mqtt-debug"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt-debug",
+    "type": "debug",
+    "z": "mqtt-tab",
+    "name": "Engineering output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 420,
+    "y": 180,
+    "wires": []
+  }
+]

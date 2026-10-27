@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "domain": {
+    "dns": "rs.brew",
+    "netbios": "RS"
+  },
+  "networks": [
+    {
+      "vlan": 10,
+      "name": "Corporate",
+      "subnet": "10.0.10.0/24",
+      "gateway": "10.0.10.1",
+      "pfsense_interface": "lan"
+    },
+    {
+      "vlan": 20,
+      "name": "DMZ",
+      "subnet": "10.0.20.0/24",
+      "gateway": "10.0.20.1",
+      "pfsense_interface": "opt1"
+    },
+    {
+      "vlan": 30,
+      "name": "Operations",
+      "subnet": "10.0.30.0/24",
+      "gateway": "10.0.30.1",
+      "pfsense_interface": "opt2"
+    },
+    {
+      "vlan": 40,
+      "name": "Engineering",
+      "subnet": "10.0.40.0/24",
+      "gateway": "10.0.40.1",
+      "pfsense_interface": "opt3"
+    },
+    {
+      "vlan": 50,
+      "name": "Field",
+      "subnet": "10.0.50.0/24",
+      "gateway": "10.0.50.1",
+      "pfsense_interface": "opt4"
+    }
+  ],
+  "machines": [
+    {
+      "name": "RSB-FW",
+      "role": "firewall",
+      "address": "per-zone .1"
+    },
+    {
+      "name": "RSB-Docker01",
+      "role": "Linux Docker host",
+      "address": "management chosen by operator"
+    },
+    {
+      "name": "RSBAD01",
+      "role": "AD DS and DNS",
+      "address": "10.0.10.2"
+    },
+    {
+      "name": "RSB-WS01",
+      "role": "Corporate workstation",
+      "address": "10.0.10.3"
+    },
+    {
+      "name": "RSB-WS03",
+      "role": "DMZ jump host",
+      "address": "10.0.20.11"
+    },
+    {
+      "name": "RSB-WS02",
+      "role": "Engineering workstation",
+      "address": "10.0.40.12"
+    }
+  ],
+  "plcs": [
+    {
+      "cell": "rawmat",
+      "address": "10.0.50.101",
+      "port": 502
+    },
+    {
+      "cell": "brewhouse",
+      "address": "10.0.50.102",
+      "port": 502
+    },
+    {
+      "cell": "fermentation",
+      "address": "10.0.50.103",
+      "port": 502
+    },
+    {
+      "cell": "conditioning",
+      "address": "10.0.50.104",
+      "port": 502
+    },
+    {
+      "cell": "packaging",
+      "address": "10.0.50.105",
+      "port": 502
+    },
+    {
+      "cell": "utilities",
+      "address": "10.0.50.106",
+      "port": 502
+    }
+  ],
+  "protocol_devices": [
+    {
+      "name": "chiller",
+      "address": "10.0.50.114",
+      "protocol": "BACnet/IP",
+      "port": 47808
+    },
+    {
+      "name": "boiler",
+      "address": "10.0.50.116",
+      "protocol": "DNP3/TCP",
+      "port": 20000
+    }
+  ]
+}

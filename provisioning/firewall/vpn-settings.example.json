@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "endpoint": "vpn.example.org",
+  "allow_private_wan_clients": true,
+  "admin_port": 1194,
+  "student_port": 1195,
+  "admin_network": "10.254.10.0/24",
+  "student_start": "10.0.10.160",
+  "student_end": "10.0.10.190"
+}

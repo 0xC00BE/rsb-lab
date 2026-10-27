@@ -1,0 +1,109 @@
+{
+  "resolved_on": "2026-10-26",
+  "note": "Registry-resolved pins verified in an independent x86-64 VMware source build and live runtime. FUXA, Node-RED and optional browser dependencies have committed npm lock files. OS packages and upstream build dependencies are not a claim of bit-identical future builds.",
+  "upstreams": {
+    "FUXA_IMAGE": {
+      "source_tag": "frangoteam/fuxa:latest",
+      "image": "frangoteam/fuxa@sha256:9b1dfbe9280319c742e3fe97674f7b9692a2b2d68546a42f6ea89960eecefeb5",
+      "platforms": [
+        "amd64",
+        "arm",
+        "arm64",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "NODERED_BASE_IMAGE": {
+      "source_tag": "nodered/node-red:latest",
+      "image": "nodered/node-red@sha256:e085d4a06591fd0aca2ea2a91364d27f1a0e31e885675f77935e10f95412a963",
+      "platforms": [
+        "amd64",
+        "arm64",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "INFLUXDB_IMAGE": {
+      "source_tag": "library/influxdb:2.7",
+      "image": "influxdb@sha256:b8d940ca9376f85118260f5b6bd236b8a00b1749c3350c5578d4cde8e27f31f2",
+      "platforms": [
+        "amd64",
+        "arm64",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "GRAFANA_IMAGE": {
+      "source_tag": "grafana/grafana:latest",
+      "image": "grafana/grafana@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f",
+      "platforms": [
+        "amd64",
+        "arm",
+        "arm64"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "MARIADB_IMAGE": {
+      "source_tag": "library/mariadb:10.11",
+      "image": "mariadb@sha256:0d0945c57f75b3a3b9ebe71aedaaad005fa5305054e8fca3d2e42a8c92b43b5e",
+      "platforms": [
+        "amd64",
+        "arm64",
+        "ppc64le",
+        "s390x",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "SCADALTS_IMAGE": {
+      "source_tag": "scadalts/scadalts:latest",
+      "image": "scadalts/scadalts@sha256:6d33e57ffd5d19a4babb2a1aea544bd36fa993e73dc3a6623dd676a313affc0a",
+      "platforms": [
+        "amd64",
+        "arm64",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "MOSQUITTO_IMAGE": {
+      "source_tag": "library/eclipse-mosquitto:2.0.18",
+      "image": "eclipse-mosquitto@sha256:d12c8f80dfc65b768bb9acecc7ef182b976f71fb681640b66358e5e0cf94e9e9",
+      "platforms": [
+        "386",
+        "amd64",
+        "arm",
+        "arm64",
+        "ppc64le",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "PYTHON_IMAGE": {
+      "source_tag": "library/python:3.11-slim",
+      "image": "python@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377",
+      "platforms": [
+        "386",
+        "amd64",
+        "arm",
+        "arm64",
+        "ppc64le",
+        "riscv64",
+        "s390x",
+        "unknown"
+      ],
+      "status": "x86-64 source build and VMware runtime verified 2026-10-26"
+    },
+    "node-red-contrib-modbus": {
+      "version": "5.62.1",
+      "integrity": "sha512-yTz3lx0GWROQRnwye3HCS9UPbphIc78IYnqEHeYTyosCaEKy3hVakJdph3xEVVmgmLfyvbQ/z9FkXVYxpZ68Ww=="
+    },
+    "node-red-contrib-influxdb": {
+      "version": "0.7.0",
+      "integrity": "sha512-WyjBYXPKZUZZxt4TwMcqk9bKhJjWXeGKie0HWnj5hZpJEYWvLzKjJHPFDLdx2IsflRoM40w1MGtH6F7xjbS2bQ=="
+    },
+    "openplc": {
+      "repository": "https://github.com/thiagoralves/OpenPLC_v3.git",
+      "commit": "64f9c11263229b019091e3c5a1896c184e0661a6"
+    }
+  }
+}

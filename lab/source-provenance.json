@@ -1,0 +1,229 @@
+{
+  "description": "Explicit source allowlist. Derived exports and newly authored files are described in docs/release-status.md.",
+  "files": [
+    {
+      "source": "vlan50/simulators/brewhouse/Dockerfile",
+      "path": "vlan50/simulators/brewhouse/Dockerfile"
+    },
+    {
+      "source": "vlan50/simulators/brewhouse/requirements.txt",
+      "path": "vlan50/simulators/brewhouse/requirements.txt"
+    },
+    {
+      "source": "vlan50/simulators/brewhouse/sim_base.py",
+      "path": "vlan50/simulators/brewhouse/sim_base.py"
+    },
+    {
+      "source": "vlan50/simulators/brewhouse/simulator.py",
+      "path": "vlan50/simulators/brewhouse/simulator.py"
+    },
+    {
+      "source": "vlan50/simulators/conditioning/bacnet_server.py",
+      "path": "vlan50/simulators/conditioning/bacnet_server.py"
+    },
+    {
+      "source": "vlan50/simulators/conditioning/Dockerfile",
+      "path": "vlan50/simulators/conditioning/Dockerfile"
+    },
+    {
+      "source": "vlan50/simulators/conditioning/requirements.txt",
+      "path": "vlan50/simulators/conditioning/requirements.txt"
+    },
+    {
+      "source": "vlan50/simulators/conditioning/sim_base.py",
+      "path": "vlan50/simulators/conditioning/sim_base.py"
+    },
+    {
+      "source": "vlan50/simulators/conditioning/simulator.py",
+      "path": "vlan50/simulators/conditioning/simulator.py"
+    },
+    {
+      "source": "vlan50/simulators/fermentation/Dockerfile",
+      "path": "vlan50/simulators/fermentation/Dockerfile"
+    },
+    {
+      "source": "vlan50/simulators/fermentation/requirements.txt",
+      "path": "vlan50/simulators/fermentation/requirements.txt"
+    },
+    {
+      "source": "vlan50/simulators/fermentation/sim_base.py",
+      "path": "vlan50/simulators/fermentation/sim_base.py"
+    },
+    {
+      "source": "vlan50/simulators/fermentation/simulator.py",
+      "path": "vlan50/simulators/fermentation/simulator.py"
+    },
+    {
+      "source": "vlan50/simulators/fermentation/test_simulator.py",
+      "path": "vlan50/simulators/fermentation/test_simulator.py"
+    },
+    {
+      "source": "vlan50/simulators/packaging/Dockerfile",
+      "path": "vlan50/simulators/packaging/Dockerfile"
+    },
+    {
+      "source": "vlan50/simulators/packaging/requirements.txt",
+      "path": "vlan50/simulators/packaging/requirements.txt"
+    },
+    {
+      "source": "vlan50/simulators/packaging/sim_base.py",
+      "path": "vlan50/simulators/packaging/sim_base.py"
+    },
+    {
+      "source": "vlan50/simulators/packaging/simulator.py",
+      "path": "vlan50/simulators/packaging/simulator.py"
+    },
+    {
+      "source": "vlan50/simulators/rawmat/Dockerfile",
+      "path": "vlan50/simulators/rawmat/Dockerfile"
+    },
+    {
+      "source": "vlan50/simulators/rawmat/requirements.txt",
+      "path": "vlan50/simulators/rawmat/requirements.txt"
+    },
+    {
+      "source": "vlan50/simulators/rawmat/sim_base.py",
+      "path": "vlan50/simulators/rawmat/sim_base.py"
+    },
+    {
+      "source": "vlan50/simulators/rawmat/simulator.py",
+      "path": "vlan50/simulators/rawmat/simulator.py"
+    },
+    {
+      "source": "vlan50/simulators/utilities/dnp3_server.py",
+      "path": "vlan50/simulators/utilities/dnp3_server.py"
+    },
+    {
+      "source": "vlan50/simulators/utilities/Dockerfile",
+      "path": "vlan50/simulators/utilities/Dockerfile"
+    },
+    {
+      "source": "vlan50/simulators/utilities/requirements.txt",
+      "path": "vlan50/simulators/utilities/requirements.txt"
+    },
+    {
+      "source": "vlan50/simulators/utilities/sim_base.py",
+      "path": "vlan50/simulators/utilities/sim_base.py"
+    },
+    {
+      "source": "vlan50/simulators/utilities/simulator.py",
+      "path": "vlan50/simulators/utilities/simulator.py"
+    },
+    {
+      "source": "vlan50/plc-programs/brewhouse.st",
+      "path": "vlan50/plc-programs/brewhouse.st"
+    },
+    {
+      "source": "vlan50/plc-programs/conditioning.st",
+      "path": "vlan50/plc-programs/conditioning.st"
+    },
+    {
+      "source": "vlan50/plc-programs/fermentation.st",
+      "path": "vlan50/plc-programs/fermentation.st"
+    },
+    {
+      "source": "vlan50/plc-programs/packaging.st",
+      "path": "vlan50/plc-programs/packaging.st"
+    },
+    {
+      "source": "vlan50/plc-programs/rawmat.st",
+      "path": "vlan50/plc-programs/rawmat.st"
+    },
+    {
+      "source": "vlan50/plc-programs/README.md",
+      "path": "vlan50/plc-programs/README.md"
+    },
+    {
+      "source": "vlan50/plc-programs/utilities.st",
+      "path": "vlan50/plc-programs/utilities.st"
+    },
+    {
+      "source": "vlan50/deploy-openplc.sh",
+      "path": "vlan50/deploy-openplc.sh"
+    },
+    {
+      "source": "tools/smoke_test_ics_node.js",
+      "path": "tools/validate/smoke_test_ics_node.js"
+    },
+    {
+      "source": "tools/pentest-status/server.py",
+      "path": "tools/pentest-status/server.py"
+    },
+    {
+      "source": "tools/pentest-status/test_server.py",
+      "path": "tools/pentest-status/test_server.py"
+    },
+    {
+      "source": "tools/pentest-status/Dockerfile",
+      "path": "tools/pentest-status/Dockerfile"
+    },
+    {
+      "source": "deploy/ad-challenge/Implement-RSBAD.ps1",
+      "path": "provisioning/windows/Implement-RSBAD.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Configure-RSBWorkstation.ps1",
+      "path": "provisioning/windows/Configure-RSBWorkstation.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Configure-RSBReachabilityAndNTLM-GPO.ps1",
+      "path": "provisioning/windows/Configure-RSBReachabilityAndNTLM-GPO.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Configure-RSBResponderChallengeGPO.ps1",
+      "path": "provisioning/windows/Configure-RSBResponderChallengeGPO.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Install-RSBResponderChallenge.ps1",
+      "path": "provisioning/windows/Install-RSBResponderChallenge.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Remove-RSBResponderChallenge.ps1",
+      "path": "provisioning/windows/Remove-RSBResponderChallenge.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Remove-RSBResponderChallengeGPO.ps1",
+      "path": "provisioning/windows/Remove-RSBResponderChallengeGPO.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Stage-RSBFirewallRules.ps1",
+      "path": "provisioning/windows/Stage-RSBFirewallRules.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Test-RSBAD.ps1",
+      "path": "provisioning/windows/Test-RSBAD.ps1"
+    },
+    {
+      "source": "deploy/ad-challenge/Test-RSBResponderChallenge.ps1",
+      "path": "provisioning/windows/Test-RSBResponderChallenge.ps1"
+    },
+    {
+      "source": "deploy/rsb-mqtt-agent/RSBEngineeringAgent.cs",
+      "path": "provisioning/windows/mqtt-agent/RSBEngineeringAgent.cs"
+    },
+    {
+      "source": "deploy/rsb-mqtt-agent/Install-RSBEngineeringAgent.ps1",
+      "path": "provisioning/windows/mqtt-agent/Install-RSBEngineeringAgent.ps1"
+    },
+    {
+      "source": "deploy/rsb-mqtt-agent/Remove-RSBEngineeringAgent.ps1",
+      "path": "provisioning/windows/mqtt-agent/Remove-RSBEngineeringAgent.ps1"
+    },
+    {
+      "source": "deploy/rsb-mqtt-agent/Test-RSBEngineeringAgent.ps1",
+      "path": "provisioning/windows/mqtt-agent/Test-RSBEngineeringAgent.ps1"
+    },
+    {
+      "source": "deploy/rsb-mqtt-agent/Set-RSBHostStayAwake.ps1",
+      "path": "provisioning/windows/mqtt-agent/Set-RSBHostStayAwake.ps1"
+    },
+    {
+      "source": "deploy/rsb-integrated-operations/rsb-brewery-operations-dashboard.json",
+      "path": "vlan30/grafana/dashboards/brewery.json"
+    },
+    {
+      "source": "vlan20/mosquitto/config/mosquitto.conf",
+      "path": "vlan20/mosquitto/config/mosquitto.conf"
+    }
+  ]
+}
